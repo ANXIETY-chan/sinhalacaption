@@ -6,8 +6,8 @@
     <title>SinhalaCaption.lk</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9fafb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
             display: flex;
             justify-content: center;
             padding: 40px 20px;
@@ -15,25 +15,29 @@
         }
         .container {
             background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.1), 0 8px 10px -6px rgba(6, 78, 59, 0.1);
             max-width: 600px;
             width: 100%;
             text-align: center;
+            border-top: 5px solid #064e3b; /* Brand Green Theme */
         }
+        
+        /* Brand Title & Logo Area */
         h1 {
-            color: #333;
+            color: #064e3b;
             margin-bottom: 5px;
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
         }
         p {
-            color: #64748b; 
-            margin-bottom: 20px;
+            color: #475569; 
+            margin-bottom: 25px;
             font-size: 16px;
         }
         
-        /* Textarea එක වටා ඇති කොටස (Paste button එක තියන්න) */
+        /* Textarea Container */
         .textarea-container {
             position: relative;
             margin-bottom: 20px;
@@ -41,94 +45,103 @@
         
         textarea {
             width: 100%;
-            height: 120px;
+            height: 130px;
             padding: 15px;
-            padding-right: 80px; /* Paste button එකට ඉඩ තැබීම */
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            padding-right: 80px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 16px;
             resize: vertical;
             box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #064e3b;
         }
         
-        /* අලුත් Paste Button එකේ Design එක */
+        /* Paste Button */
         .paste-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px;
+            right: 12px;
             background-color: #f1f5f9;
             border: 1px solid #cbd5e1;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            color: #333;
-            font-weight: bold;
+            color: #064e3b;
+            font-weight: 600;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
         .paste-btn:hover {
             background-color: #e2e8f0;
         }
 
+        /* Generate Button - Brand Orange & Green Combination */
         button.generate-btn {
             width: 100%;
-            background-color: #0056b3;
+            background-color: #064e3b; /* Deep Green */
             color: white;
             border: none;
-            padding: 15px;
+            padding: 16px;
             font-size: 18px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: bold;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
         }
         button.generate-btn:hover {
-            background-color: #004494;
+            background-color: #022c22;
+            transform: translateY(-1px);
         }
         button.generate-btn:disabled {
-            background-color: #8bb9e8;
+            background-color: #94a3b8;
             cursor: not-allowed;
+            transform: none;
         }
+        
+        /* Result Box */
         .result-box {
             position: relative;
             padding: 20px;
-            background-color: #e2e8f0;
-            border-radius: 8px;
-            margin-top: 20px;
+            background-color: #f0fdf4; /* Light green tint background */
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            margin-top: 25px;
             text-align: left;
             display: none;
             min-height: 50px;
         }
         .copy-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px;
+            right: 12px;
             background: none;
             border: none;
             font-size: 20px;
             cursor: pointer;
-            color: #555;
+            color: #064e3b;
             transition: 0.2s;
         }
         .copy-btn:hover {
-            color: #000;
             transform: scale(1.1);
         }
         #responseText {
             margin: 0;
             padding-right: 35px;
-            color: #1e293b;
+            color: #064e3b;
             white-space: pre-wrap;
             font-size: 16px;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-weight: 500;
         }
         .loader {
             display: none;
             margin-top: 15px;
-            color: #0056b3;
+            color: #064e3b;
             font-weight: bold;
         }
     </style>
@@ -136,11 +149,10 @@
 <body>
 
 <div class="container">
-    <!-- ලෝගෝ එකක් දානවා නම් මෙතනට <img> ටැග් එකක් දාන්න පුළුවන් (පහත විස්තර කර ඇත) -->
+    <!-- ඔයාගේ අර ඩිසයින් එකට ගැළපෙන Brand Title එක -->
     <h1>SinhalaCaption.lk</h1>
     <p>ඔයාගේ Singlish හරි, සිංහල හරි වාක්‍යය මෙතන ටයිප් කරන්න 👇</p>
     
-    <!-- Text area එක සහ Paste Button එක -->
     <div class="textarea-container">
         <textarea id="inputText" placeholder="ඔයාගේ අදහස මෙතන ලියන්න..."></textarea>
         <button class="paste-btn" onclick="pasteFromClipboard()" title="Paste Text">📋 Paste</button>
@@ -156,17 +168,13 @@
 </div>
 
 <script>
-    // Paste Button එකේ Function එක
     async function pasteFromClipboard() {
         try {
-            // Clipboard එකේ තියෙන text එක කියවනවා
             const text = await navigator.clipboard.readText();
             const textArea = document.getElementById('inputText');
-            // දැනට තියෙන text එකට අලුත් text එක එකතු කරනවා
             textArea.value = textArea.value + text;
         } catch (err) {
-            // Browser එකෙන් අවසර දුන්නේ නැත්නම් එන පණිවිඩය
-            alert('Paste කිරීමට Browser එකෙන් අවසර නොමැත. කරුණාකර Box එක මත Long Press කර (හෝ Ctrl+V මගින්) Paste කරන්න.');
+            alert('Paste කිරීමට Browser එකෙන් අවසර නොමැත.');
         }
     }
 
@@ -204,14 +212,17 @@
                     responseText.innerText = "දෝෂයක් සිදු විය: " + (data.error?.message || JSON.stringify(data));
                 }
                 resultBox.style.backgroundColor = "#fee2e2"; 
+                resultBox.style.borderColor = "#fca5a5";
             } else {
                 const generatedText = data.candidates[0].content.parts[0].text;
                 responseText.innerText = generatedText;
-                resultBox.style.backgroundColor = "#e2e8f0"; 
+                resultBox.style.backgroundColor = "#f0fdf4"; 
+                resultBox.style.borderColor = "#bbf7d0";
             }
         } catch (error) {
             responseText.innerText = "Network දෝෂයක්: " + error.message;
             resultBox.style.backgroundColor = "#fee2e2";
+            resultBox.style.borderColor = "#fca5a5";
         }
 
         loader.style.display = 'none';
@@ -224,7 +235,6 @@
         navigator.clipboard.writeText(textToCopy).then(() => {
             alert("සාර්ථකව Copy කරගන්නා ලදී! ✅");
         }).catch(err => {
-            console.error('Copy කරන්න බැරි වුණා: ', err);
             alert("Copy කිරීම අසාර්ථකයි.");
         });
     }
