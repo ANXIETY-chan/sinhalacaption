@@ -13,8 +13,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    // මෙහි v1beta වෙනුවට ස්ථාවර v1 සහ gemini-1.5-flash මොඩල් එක යොදා ඇත
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // මෙහි වඩාත්ම ස්ථාවර gemini-pro මොඩල් එක සහ v1beta යොදා ඇත
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
