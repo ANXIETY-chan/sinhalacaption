@@ -28,21 +28,51 @@
             font-size: 28px;
         }
         p {
-            color: #64748b; /* ටිකක් ලා පාටක් දුන්නා ලස්සන වෙන්න */
+            color: #64748b; 
             margin-bottom: 20px;
             font-size: 16px;
         }
+        
+        /* Textarea එක වටා ඇති කොටස (Paste button එක තියන්න) */
+        .textarea-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
         textarea {
             width: 100%;
             height: 120px;
             padding: 15px;
+            padding-right: 80px; /* Paste button එකට ඉඩ තැබීම */
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 16px;
             resize: vertical;
             box-sizing: border-box;
-            margin-bottom: 20px;
         }
+        
+        /* අලුත් Paste Button එකේ Design එක */
+        .paste-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .paste-btn:hover {
+            background-color: #e2e8f0;
+        }
+
         button.generate-btn {
             width: 100%;
             background-color: #0056b3;
@@ -106,12 +136,15 @@
 <body>
 
 <div class="container">
+    <!-- ලෝගෝ එකක් දානවා නම් මෙතනට <img> ටැග් එකක් දාන්න පුළුවන් (පහත විස්තර කර ඇත) -->
     <h1>SinhalaCaption.lk</h1>
-    <!-- UI එකේ Formal ගතිය අයින් කරලා Friendly විදියට වෙනස් කළා -->
     <p>ඔයාගේ Singlish හරි, සිංහල හරි වාක්‍යය මෙතන ටයිප් කරන්න 👇</p>
     
-    <!-- Placeholder එකත් පොඩ්ඩක් වෙනස් කළා -->
-    <textarea id="inputText" placeholder="ඔයාගේ අදහස මෙතන ලියන්න..."></textarea>
+    <!-- Text area එක සහ Paste Button එක -->
+    <div class="textarea-container">
+        <textarea id="inputText" placeholder="ඔයාගේ අදහස මෙතන ලියන්න..."></textarea>
+        <button class="paste-btn" onclick="pasteFromClipboard()" title="Paste Text">📋 Paste</button>
+    </div>
     
     <button class="generate-btn" id="generateBtn" onclick="generateCaption()">ලස්සන සිංහලෙන් හදාගන්න ✨</button>
     <div id="loader" class="loader">කරුණාකර රැඳී සිටින්න... ⏳</div>
@@ -123,6 +156,20 @@
 </div>
 
 <script>
+    // Paste Button එකේ Function එක
+    async function pasteFromClipboard() {
+        try {
+            // Clipboard එකේ තියෙන text එක කියවනවා
+            const text = await navigator.clipboard.readText();
+            const textArea = document.getElementById('inputText');
+            // දැනට තියෙන text එකට අලුත් text එක එකතු කරනවා
+            textArea.value = textArea.value + text;
+        } catch (err) {
+            // Browser එකෙන් අවසර දුන්නේ නැත්නම් එන පණිවිඩය
+            alert('Paste කිරීමට Browser එකෙන් අවසර නොමැත. කරුණාකර Box එක මත Long Press කර (හෝ Ctrl+V මගින්) Paste කරන්න.');
+        }
+    }
+
     async function generateCaption() {
         const inputText = document.getElementById('inputText').value.trim();
         const resultBox = document.getElementById('resultBox');
