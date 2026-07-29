@@ -5,58 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SinhalaCaption.lk</title>
     <style>
-        body { font-family: sans-serif; background: #f4f6f8; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
-        h2 { color: #333; }
-        textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-top: 15px; resize: none; }
-        button { background: #0056b3; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; }
-        button:hover { background: #004085; }
-        #result { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 8px; text-align: left; min-height: 50px; font-size: 16px; color: #333; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        button.generate-btn {
+            width: 100%;
+            background-color: #0056b3; /* තද නිල් පාට */
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        button.generate-btn:hover {
+            background-color: #004494;
+        }
+        button.generate-btn:disabled {
+            background-color: #8bb9e8;
+            cursor: not-allowed;
+        }
+        .result-box {
+            position: relative;
+            padding: 20px;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            display: none; /* මුලින් සඟවා ඇත */
+            min-height: 50px;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #555;
+            transition: 0.2s;
+        }
+        .copy-btn:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+        #responseText {
+            margin: 0;
+            padding-right: 35px; /* Copy බට්න් එකට ඉඩ තැබීම */
+            color: #1e293b;
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .loader {
+            display: none;
+            margin-top: 15px;
+            color: #0056b3;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>SinhalaCaption.lk</h2>
+    <h1>SinhalaCaption.lk</h1>
     <p>ඔබගේ ලිඛිත සිංහල හෝ Singlish වාක්‍යය මෙහි යොදන්න.</p>
     
-    <textarea id="userInput" placeholder="මෙතන ටයිප් කරන්න..."></textarea>
-    <button onclick="generateCaption()">ಕ್ಯැプション එක හදන්න</button>
+    <textarea id="inputText" placeholder="මෙහි ටයිප් කරන්න..."></textarea>
     
-    <div id="result">ප්‍රතිඵලය මෙහි පෙන්වනු ඇත...</div>
+    <!-- නිවැරදි කළ බට්න් එක -->
+    <button class="generate-btn" id="generateBtn" onclick="generateCaption()">නිවැරදි සිංහලට හරවන්න</button>
+    <div id="loader" class="loader">කරුණාකර රැඳී සිටින්න... ⏳</div>
+    
+    <div class="result-box" id="resultBox">
+        <button class="copy-btn" onclick="copyToClipboard()" title="Copy Text">📋</button>
+        <p id="responseText"></p>
+    </div>
 </div>
 
 <script>
     async function generateCaption() {
-        const text = document.getElementById('userInput').value;
-        const resultDiv = document.getElementById('result');
+        const inputText = document.getElementById('inputText').value.trim();
+        const resultBox = document.getElementById('resultBox');
+        const responseText = document.getElementById('responseText');
+        const loader = document.getElementById('loader');
+        const generateBtn = document.getElementById('generateBtn');
         
-        if (!text.trim()) {
-            alert('කරුණාකර යමක් ඇතුළත් කරන්න!');
+        if (!inputText) {
+            alert('කරුණාකර වාක්‍යයක් ඇතුළත් කරන්න!');
             return;
         }
 
-        resultDiv.innerText = 'සකස් කරමින් පවතී... කරුණාකර රැඳී සිටින්න.';
+        // Loading පෙන්වීම
+        resultBox.style.display = 'none';
+        loader.style.display = 'block';
+        generateBtn.disabled = true;
 
         try {
             const response = await fetch('/api/gemini', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: text })
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: inputText })
             });
 
             const data = await response.json();
-            
-            if (data.candidates && data.candidates[0].content.parts[0].text) {
-                resultDiv.innerText = data.candidates[0].content.parts[0].text;
+
+            if (!response.ok) {
+                responseText.innerText = "දෝෂයක් සිදු විය: " + (data.error?.message || JSON.stringify(data));
+                resultBox.style.backgroundColor = "#fee2e2"; // රතු පාටක්
             } else {
-                resultDiv.innerText = 'දෝෂයක් සිදු විය: ' + JSON.stringify(data);
+                // සාර්ථකව ආවොත් Text එක පෙන්වීම
+                const generatedText = data.candidates[0].content.parts[0].text;
+                responseText.innerText = generatedText;
+                resultBox.style.backgroundColor = "#e2e8f0"; // සාමාන්‍ය පාට
             }
         } catch (error) {
-            resultDiv.innerText = 'සර්වර් දෝෂයකි: ' + error.message;
+            responseText.innerText = "Network දෝෂයක්: " + error.message;
+            resultBox.style.backgroundColor = "#fee2e2";
         }
+
+        // Loading එක අයින් කර ප්‍රතිඵලය පෙන්වීම
+        loader.style.display = 'none';
+        resultBox.style.display = 'block';
+        generateBtn.disabled = false;
+    }
+
+    function copyToClipboard() {
+        const textToCopy = document.getElementById('responseText').innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert("සාර්ථකව Copy කරගන්නා ලදී! ✅");
+        }).catch(err => {
+            console.error('Copy කරන්න බැරි වුණා: ', err);
+            alert("Copy කිරීම අසාර්ථකයි.");
+        });
     }
 </script>
-
 </body>
 </html>
