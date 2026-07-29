@@ -47,7 +47,7 @@
             z-index: 100;
         }
         .logo img {
-            height: 60px; /* Menu එකේ ලෝගෝ එක දැන් පැහැදිලිව පෙනෙයි */
+            height: 80px; /* Menu එකේ ලෝගෝ එක ගොඩක් ලොකු කළා */
             width: auto;
             object-fit: contain;
         }
@@ -83,13 +83,14 @@
             margin: 0 auto;
         }
         
-        /* අලුතින් දැම්ම Hero Logo එකේ Design එක */
+        /* Hero Logo එකේ අලුත් Design එක */
         .hero-logo {
-            height: 100px; 
+            height: 160px; /* H1 එකට උඩින් තියෙන ලෝගෝ එක ගොඩක්ම ලොකු කළා */
             width: auto;
+            max-width: 100%;
             object-fit: contain;
             margin-bottom: 25px;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06)); /* Premium පෙනුමට පොඩි Shadow එකක් */
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
         }
 
         .hero h1 {
@@ -446,7 +447,8 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <img src="logo.png" alt="SinhalaCaption.lk">
+            <!-- Header Logo (bglogoonly.png) -->
+            <img src="bglogoonly.png" alt="SinhalaCaption.lk">
         </div>
         <nav>
             <ul>
@@ -463,8 +465,8 @@
     <!-- Hero & Tool -->
     <section class="hero" id="home">
         
-        <!-- Main Logo added here right above the H1 -->
-        <img src="logo.png" alt="SinhalaCaption.lk Logo" class="hero-logo">
+        <!-- Hero Section Logo (bglogo.png) -->
+        <img src="bglogo.png" alt="SinhalaCaption.lk Logo" class="hero-logo">
 
         <h1>Craft Perfect <span>Sinhala Captions</span> Instantly</h1>
         <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
@@ -663,7 +665,12 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    responseText.innerText = "අවුලක් වුණා: " + (data.error?.message || "පොඩි ප්‍රශ්නයක්.");
+                    // Display API errors nicely to the user
+                    if (response.status === 429) {
+                        responseText.innerText = "කණගාටුයි, දැනට ගොඩක් අය භාවිතා කරනවා. තත්පර කිහිපයකින් නැවත උත්සාහ කරන්න. ⏳";
+                    } else {
+                        responseText.innerText = "අවුලක් වුණා: " + (data.error?.message || "පොඩි ප්‍රශ්නයක්.");
+                    }
                     responseText.style.color = "#dc2626";
                 } else {
                     const generatedText = data.candidates[0].content.parts[0].text;
@@ -683,7 +690,7 @@
 
         function copyToClipboard() {
             const textToCopy = document.getElementById('responseText').innerText;
-            if(textToCopy === "ඔයාගේ සිංහල කැප්ෂන් එක මෙතන...") return;
+            if(textToCopy === "ඔයාගේ සිංහල කැප්ෂන් එක මෙතන..." || textToCopy.includes("අවුලක් වුණා") || textToCopy.includes("කණගාටුයි")) return;
             
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const copyBtn = document.getElementById('copyBtn');
