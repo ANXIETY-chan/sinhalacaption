@@ -6,15 +6,14 @@ export default async function handler(req, res) {
   try {
     const { prompt } = req.body;
     
-    // API Key එක අරගෙන හිස්තැන් අයින් කිරීම
     const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
     if (!apiKey) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    // මෙහි වඩාත්ම ස්ථාවර gemini-pro මොඩල් එක සහ v1beta යොදා ඇත
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    // මෙහි අලුත්ම සහ වඩාත්ම ස්ථාවර gemini-1.5-pro මොඩල් එක යොදා ඇත
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
