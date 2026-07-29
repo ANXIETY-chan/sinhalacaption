@@ -3,31 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SinhalaCaption.lk</title>
+    <title>SinhalaCaption.lk - Professional Sinhala Caption Generator</title>
     <style>
+        :root {
+            --primary-green: #064e3b;
+            --primary-hover: #022c22;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --border-color: #e2e8f0;
+            --accent-green: #f0fdf4;
+            --border-green: #bbf7d0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
-            padding: 40px 20px;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
             margin: 0;
+            box-sizing: border-box;
         }
+
         .container {
-            background-color: white;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.12), 0 8px 10px -6px rgba(6, 78, 59, 0.08);
-            max-width: 600px;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(6, 78, 59, 0.08), 0 8px 10px -6px rgba(6, 78, 59, 0.04);
+            max-width: 650px;
             width: 100%;
             text-align: center;
-            border-top: 6px solid #064e3b; 
+            border-top: 6px solid var(--primary-green);
         }
         
         .brand-logo {
-            width: 220px;
+            width: 200px;
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             transition: transform 0.3s ease;
         }
         .brand-logo:hover {
@@ -35,9 +51,10 @@
         }
 
         p.sub-text {
-            color: #475569; 
+            color: var(--text-sub); 
             margin-bottom: 25px;
             font-size: 16px;
+            font-weight: 500;
         }
         
         .textarea-container {
@@ -47,61 +64,62 @@
         
         textarea {
             width: 100%;
-            height: 130px;
-            padding: 15px;
-            padding-bottom: 45px; /* පහළින් බටන් එකට ඉඩ තැබීමට */
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            height: 140px;
+            padding: 18px;
+            padding-bottom: 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
             font-size: 16px;
             resize: vertical;
             box-sizing: border-box;
             outline: none;
             transition: all 0.3s ease;
-            color: #1e293b;
+            color: var(--text-main);
+            background-color: #fafafa;
         }
         textarea:focus {
-            border-color: #064e3b;
-            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.1);
+            border-color: var(--primary-green);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(6, 78, 59, 0.08);
         }
         
-        /* Paste Button - දැන් පහළට පැමිණ ඇත */
         .paste-btn {
             position: absolute;
             bottom: 12px;
             right: 12px;
             background-color: #f1f5f9;
             border: 1px solid #cbd5e1;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 8px;
             font-size: 13px;
             cursor: pointer;
-            color: #064e3b;
+            color: var(--primary-green);
             font-weight: 600;
-            transition: 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         .paste-btn:hover {
             background-color: #e2e8f0;
-            border-color: #94a3b8;
+            border-color: var(--primary-green);
         }
 
         button.generate-btn {
             width: 100%;
-            background-color: #064e3b; 
+            background-color: var(--primary-green); 
             color: white;
             border: none;
             padding: 16px;
             font-size: 18px;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+            box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2);
         }
         button.generate-btn:hover {
-            background-color: #022c22;
+            background-color: var(--primary-hover);
             transform: translateY(-1px);
         }
         button.generate-btn:disabled {
@@ -113,44 +131,66 @@
         
         .result-box {
             position: relative;
-            padding: 20px;
-            background-color: #f0fdf4; 
-            border: 1px solid #bbf7d0;
-            border-radius: 12px;
+            padding: 22px;
+            background-color: var(--accent-green); 
+            border: 1px solid var(--border-green);
+            border-radius: 14px;
             margin-top: 25px;
             text-align: left;
             display: none;
-            min-height: 50px;
+            animation: fadeIn 0.4s ease;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .copy-btn {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: none;
-            border: none;
-            font-size: 20px;
+            top: 14px;
+            right: 14px;
+            background-color: white;
+            border: 1px solid var(--border-green);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 14px;
             cursor: pointer;
-            color: #064e3b;
+            color: var(--primary-green);
+            font-weight: 600;
             transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .copy-btn:hover {
-            transform: scale(1.1);
+            background-color: var(--primary-green);
+            color: white;
         }
+
         #responseText {
             margin: 0;
-            padding-right: 35px;
-            color: #064e3b;
+            padding-right: 50px;
+            color: var(--primary-green);
             white-space: pre-wrap;
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.7;
             font-weight: 500;
         }
+
         .loader {
             display: none;
-            margin-top: 15px;
-            color: #064e3b;
-            font-weight: bold;
+            margin-top: 20px;
+            color: var(--primary-green);
+            font-weight: 600;
             font-size: 16px;
+        }
+
+        /* Footer Info */
+        .footer-note {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #94a3b8;
         }
     </style>
 </head>
@@ -162,16 +202,20 @@
     <p class="sub-text">Type in English, Singlish, or Sinhala 👇</p>
     
     <div class="textarea-container">
-        <textarea id="inputText" placeholder="Write your thoughts here..." onkeydown="handleKeyPress(event)"></textarea>
+        <textarea id="inputText" placeholder="Write your thoughts here... (Enter ඔබන්න හෝ පහළ බොත්තම ක්ලික් කරන්න)" onkeydown="handleKeyPress(event)"></textarea>
         <button class="paste-btn" onclick="pasteFromClipboard()" title="Paste Text">📋 Paste</button>
     </div>
     
     <button class="generate-btn" id="generateBtn" onclick="generateCaption()">ලස්සන සිංහලෙන් හදාගන්න ✨</button>
-    <div id="loader" class="loader">කරුණාකර රැඳී සිටින්න... ⏳</div>
+    <div id="loader" class="loader">කරුණාකර රැඳී සිටින්න, කැප්ෂන් එක සූදානම් කරමින් පවතී... ⏳</div>
     
     <div class="result-box" id="resultBox">
-        <button class="copy-btn" onclick="copyToClipboard()" title="Copy Text">📋</button>
+        <button class="copy-btn" onclick="copyToClipboard()" title="Copy Text">📋 Copy</button>
         <p id="responseText"></p>
+    </div>
+
+    <div class="footer-note">
+        &copy; 2026 SinhalaCaption.lk &bull; All Rights Reserved
     </div>
 </div>
 
@@ -180,16 +224,16 @@
         try {
             const text = await navigator.clipboard.readText();
             const textArea = document.getElementById('inputText');
-            textArea.value = textArea.value + text;
+            textArea.value += text;
+            textArea.focus();
         } catch (err) {
             alert('Paste කිරීමට Browser එකෙන් අවසර නොමැත. කරුණාකර Ctrl+V භාවිතා කරන්න.');
         }
     }
 
-    // Enter එක එබූ විට ක්‍රියාත්මක වීමට (Shift + Enter මගින් අලුත් ලයින් එකකට යා හැක)
     function handleKeyPress(event) {
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // අලුත් ලයින් එකකට යාම වැළැක්වීම
+            event.preventDefault();
             generateCaption();
         }
     }
@@ -202,7 +246,8 @@
         const generateBtn = document.getElementById('generateBtn');
         
         if (!inputText) {
-            alert('කරුණාකර වාක්‍යයක් ඇතුළත් කරන්න!');
+            alert('කරුණාකර යමක් ඇතුළත් කරන්න!');
+            document.getElementById('inputText').focus();
             return;
         }
 
@@ -229,11 +274,12 @@
                 }
                 resultBox.style.backgroundColor = "#fee2e2"; 
                 resultBox.style.borderColor = "#fca5a5";
+                resultBox.style.color = "#991b1b";
             } else {
                 const generatedText = data.candidates[0].content.parts[0].text;
                 responseText.innerText = generatedText;
-                resultBox.style.backgroundColor = "#f0fdf4"; 
-                resultBox.style.borderColor = "#bbf7d0";
+                resultBox.style.backgroundColor = "var(--accent-green)"; 
+                resultBox.style.borderColor = "var(--border-green)";
             }
         } catch (error) {
             responseText.innerText = "Network දෝෂයක්: " + error.message;
@@ -249,7 +295,11 @@
     function copyToClipboard() {
         const textToCopy = document.getElementById('responseText').innerText;
         navigator.clipboard.writeText(textToCopy).then(() => {
-            alert("සාර්ථකව Copy කරගන්නා ලදී! ✅");
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.innerText = "Copied! ✅";
+            setTimeout(() => {
+                copyBtn.innerText = "📋 Copy";
+            }, 2000);
         }).catch(err => {
             alert("Copy කිරීම අසාර්ථකයි.");
         });
