@@ -6,14 +6,15 @@ export default async function handler(req, res) {
   try {
     const { prompt } = req.body;
     
-    // API Key එක අරගෙන, ඒකේ හිස්තැන් තියෙනවා නම් ඒවත් අයින් කරනවා (.trim)
+    // API Key එක අරගෙන, හිස්තැන් අයින් කරනවා
     const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
     if (!apiKey) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // මෙතන අලුත් මොඩල් එකේ නම (gemini-1.5-flash-latest) යාවත්කාලීන කර ඇත
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +26,6 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
-    // Google එකෙන් එරර් එකක් ආවොත් ඒක පැහැදිලිව පෙන්නනවා
     if (!response.ok) {
        return res.status(response.status).json(data);
     }
