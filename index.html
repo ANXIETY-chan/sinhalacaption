@@ -24,24 +24,18 @@
             border-top: 6px solid #064e3b; /* Brand Deep Green */
         }
         
-        /* Logo Styling */
+        /* Logo Styling - නම ඇතුළත් ලෝගෝ එකට හරියටම සෙට් වෙන්න හැදිණි */
         .brand-logo {
-            width: 110px;
+            width: 220px; /* ලෝගෝ එක පැහැදිලිව පෙනෙන්න ප්‍රමාණය වැඩි කළා */
             height: auto;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             transition: transform 0.3s ease;
         }
         .brand-logo:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
-        /* Brand Title & Subtitle */
-        h1 {
-            color: #064e3b;
-            margin: 5px 0 8px 0;
-            font-size: 30px;
-            font-weight: 800;
-        }
+        /* Subtitle */
         p.sub-text {
             color: #475569; 
             margin-bottom: 25px;
@@ -58,7 +52,7 @@
             width: 100%;
             height: 130px;
             padding: 15px;
-            padding-right: 85px; /* Paste button එකට ඉඩ */
+            padding-right: 85px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 16px;
@@ -73,7 +67,7 @@
             box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.1);
         }
         
-        /* Paste Button - Brand Styled */
+        /* Paste Button */
         .paste-btn {
             position: absolute;
             top: 12px;
@@ -96,7 +90,7 @@
             border-color: #94a3b8;
         }
 
-        /* Generate Button - Brand Deep Green with Orange Accent */
+        /* Generate Button */
         button.generate-btn {
             width: 100%;
             background-color: #064e3b; 
@@ -121,7 +115,7 @@
             box-shadow: none;
         }
         
-        /* Result Box - Brand Tinted */
+        /* Result Box */
         .result-box {
             position: relative;
             padding: 20px;
@@ -168,10 +162,9 @@
 <body>
 
 <div class="container">
-    <!-- අලුත් ලෝගෝ එක සම්බන්ධ කරන තැන (logo.png නමින් ෆයිල් එක දාන්න) -->
+    <!-- ලෝගෝ එක පමණක් පෙන්වීම (නම ඇතුළත් නිසා ඩබල් වීම වළකා ඇත) -->
     <img src="logo.png" alt="SinhalaCaption.lk Logo" class="brand-logo">
     
-    <h1>SinhalaCaption.lk</h1>
     <p class="sub-text">ඔයාගේ Singlish හරි, සිංහල හරි වාක්‍යය මෙතන ටයිප් කරන්න 👇</p>
     
     <div class="textarea-container">
