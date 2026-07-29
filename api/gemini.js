@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Frontend එකෙන් එවන prompt එකයි, අලුත් switches දෙකයි මෙතනින් අල්ලගන්නවා
     const { prompt, addEmojis, addHashtags } = req.body;
     
     const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
@@ -13,13 +12,13 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    // Switches On/Off කරලා තියෙන විදියට AI එකට දෙන උපදෙස් වෙනස් කිරීම
+    // Emojis අඩුවෙන් දාන්න උපදෙස් දීම
     let emojiInstruction = addEmojis 
-        ? "- අන්තර්ගතයට ගැළපෙන, ආකර්ෂණීය Emojis අනිවාර්යයෙන්ම එක් කරන්න." 
+        ? "- අන්තර්ගතයට ගැළපෙන Emojis භාවිතා කරන්න. නමුත් එය පමණට වඩා වැඩි නොවිය යුතුය (මුළු කැප්ෂන් එකටම Emojis 2ක් හෝ 3ක් පමණක් ඉතා අලංකාරව එක් කරන්න)." 
         : "- කිසිදු Emojis භාවිතා නොකරන්න.";
         
     let hashtagInstruction = addHashtags 
-        ? "- සමාජ මාධ්‍යවල (Social Media) Reach එක වැඩි කරන, අන්තර්ගතයට ගැළපෙන Trending Hashtags 3ත් 5ත් අතර ප්‍රමාණයක් අවසානයට එක් කරන්න." 
+        ? "- සමාජ මාධ්‍යවල Reach එක වැඩි කරන, අන්තර්ගතයට ගැළපෙන Trending Hashtags 3ත් 5ත් අතර ප්‍රමාණයක් අවසානයට එක් කරන්න." 
         : "- කිසිදු Hashtags (හැෂ්ටැග්) භාවිතා නොකරන්න.";
 
     const systemPrompt = `ඔබ දක්ෂ භාෂා පරිවර්තකයෙකි සහ Social Media කැප්ෂන් රචකයෙකි. 
@@ -27,6 +26,7 @@ export default async function handler(req, res) {
     
     විශේෂ උපදෙස්:
     - නිල හෝ පොත්පත්වල පාවිච්චි කරන Formal බස භාවිත නොකරන්න (උදාහරණ: 'පැමිණියෙමි' වෙනුවට 'ආවා', 'කරයි' වෙනුවට 'කරනවා' යනාදී ලෙස කතා කරන විලාසය පාවිච්චි කරන්න).
+    - පරිශීලකයා ලබා දී ඇති ආදානය දිගු ඡේදයක් (Paragraph) නම් හෝ කරුණු කිහිපයක් තිබේ නම්, එය කියවීමට පහසු වන පරිදි කෙටි ඡේද හෝ Bullet points (•) ලෙස වෙන් කර දක්වන්න.
     ${emojiInstruction}
     ${hashtagInstruction}
     - අමතර පැහැදිලි කිරීම්, සටහන් හෝ සුබපැතුම් කිසිවක් අවශ්‍ය නැත.
