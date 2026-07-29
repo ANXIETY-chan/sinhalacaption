@@ -24,11 +24,11 @@
         }
         h1 {
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-size: 28px;
         }
         p {
-            color: #555;
+            color: #64748b; /* ටිකක් ලා පාටක් දුන්නා ලස්සන වෙන්න */
             margin-bottom: 20px;
             font-size: 16px;
         }
@@ -45,7 +45,7 @@
         }
         button.generate-btn {
             width: 100%;
-            background-color: #0056b3; /* තද නිල් පාට */
+            background-color: #0056b3;
             color: white;
             border: none;
             padding: 15px;
@@ -69,7 +69,7 @@
             border-radius: 8px;
             margin-top: 20px;
             text-align: left;
-            display: none; /* මුලින් සඟවා ඇත */
+            display: none;
             min-height: 50px;
         }
         .copy-btn {
@@ -89,7 +89,7 @@
         }
         #responseText {
             margin: 0;
-            padding-right: 35px; /* Copy බට්න් එකට ඉඩ තැබීම */
+            padding-right: 35px;
             color: #1e293b;
             white-space: pre-wrap;
             font-size: 16px;
@@ -107,12 +107,13 @@
 
 <div class="container">
     <h1>SinhalaCaption.lk</h1>
-    <p>ඔබගේ ලිඛිත සිංහල හෝ Singlish වාක්‍යය මෙහි යොදන්න.</p>
+    <!-- UI එකේ Formal ගතිය අයින් කරලා Friendly විදියට වෙනස් කළා -->
+    <p>ඔයාගේ Singlish හරි, සිංහල හරි වාක්‍යය මෙතන ටයිප් කරන්න 👇</p>
     
-    <textarea id="inputText" placeholder="මෙහි ටයිප් කරන්න..."></textarea>
+    <!-- Placeholder එකත් පොඩ්ඩක් වෙනස් කළා -->
+    <textarea id="inputText" placeholder="ඔයාගේ අදහස මෙතන ලියන්න..."></textarea>
     
-    <!-- නිවැරදි කළ බට්න් එක -->
-    <button class="generate-btn" id="generateBtn" onclick="generateCaption()">නිවැරදි සිංහලට හරවන්න</button>
+    <button class="generate-btn" id="generateBtn" onclick="generateCaption()">ලස්සන සිංහලෙන් හදාගන්න ✨</button>
     <div id="loader" class="loader">කරුණාකර රැඳී සිටින්න... ⏳</div>
     
     <div class="result-box" id="resultBox">
@@ -134,7 +135,6 @@
             return;
         }
 
-        // Loading පෙන්වීම
         resultBox.style.display = 'none';
         loader.style.display = 'block';
         generateBtn.disabled = true;
@@ -151,20 +151,22 @@
             const data = await response.json();
 
             if (!response.ok) {
-                responseText.innerText = "දෝෂයක් සිදු විය: " + (data.error?.message || JSON.stringify(data));
-                resultBox.style.backgroundColor = "#fee2e2"; // රතු පාටක්
+                if (data.error?.message?.includes('high demand')) {
+                    responseText.innerText = "දෝෂයක්: සර්වර් එක කාර්යබහුලයි. කරුණාකර තත්පර කිහිපයකින් නැවත උත්සාහ කරන්න.";
+                } else {
+                    responseText.innerText = "දෝෂයක් සිදු විය: " + (data.error?.message || JSON.stringify(data));
+                }
+                resultBox.style.backgroundColor = "#fee2e2"; 
             } else {
-                // සාර්ථකව ආවොත් Text එක පෙන්වීම
                 const generatedText = data.candidates[0].content.parts[0].text;
                 responseText.innerText = generatedText;
-                resultBox.style.backgroundColor = "#e2e8f0"; // සාමාන්‍ය පාට
+                resultBox.style.backgroundColor = "#e2e8f0"; 
             }
         } catch (error) {
             responseText.innerText = "Network දෝෂයක්: " + error.message;
             resultBox.style.backgroundColor = "#fee2e2";
         }
 
-        // Loading එක අයින් කර ප්‍රතිඵලය පෙන්වීම
         loader.style.display = 'none';
         resultBox.style.display = 'block';
         generateBtn.disabled = false;
