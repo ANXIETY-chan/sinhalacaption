@@ -47,8 +47,9 @@
             z-index: 100;
         }
         .logo img {
-            height: 45px; 
+            height: 60px; /* Menu එකේ ලෝගෝ එක දැන් පැහැදිලිව පෙනෙයි */
             width: auto;
+            object-fit: contain;
         }
         nav ul {
             list-style: none;
@@ -81,6 +82,16 @@
             max-width: 1000px;
             margin: 0 auto;
         }
+        
+        /* අලුතින් දැම්ම Hero Logo එකේ Design එක */
+        .hero-logo {
+            height: 100px; 
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06)); /* Premium පෙනුමට පොඩි Shadow එකක් */
+        }
+
         .hero h1 {
             font-size: 42px;
             color: var(--text-main);
@@ -443,7 +454,7 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li> <!-- අලුතින් එකතු කළ Contact ලින්ක් එක -->
+                <li><a href="#contact">Contact</a></li>
                 <li><a href="#home" class="nav-cta">Try Generator</a></li>
             </ul>
         </nav>
@@ -451,6 +462,10 @@
 
     <!-- Hero & Tool -->
     <section class="hero" id="home">
+        
+        <!-- Main Logo added here right above the H1 -->
+        <img src="logo.png" alt="SinhalaCaption.lk Logo" class="hero-logo">
+
         <h1>Craft Perfect <span>Sinhala Captions</span> Instantly</h1>
         <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
 
@@ -578,7 +593,7 @@
         </div>
     </section>
 
-    <!-- Contact Section (අලුතින් එකතු කළ කොටස) -->
+    <!-- Contact Section -->
     <section class="section-wrapper" id="contact" style="padding-top: 40px; padding-bottom: 80px;">
         <div class="contact-container">
             <h2 class="section-title" style="margin-bottom: 20px;">අප හා සම්බන්ධ වන්න</h2>
