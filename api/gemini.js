@@ -13,10 +13,15 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    // AI එකට ලබාදෙන රහස් උපදෙස (System Prompt)
-    const systemPrompt = `පහත ලබා දී ඇති අදහස භාවිතා කර, Facebook, Instagram වැනි සමාජ මාධ්‍ය සඳහා ගැළපෙන, ආකර්ෂණීය සිංහල කැප්ෂන් එකක් පමණක් නිර්මාණය කර දෙන්න. අදාළ Emojis සහ Hashtags ද එකතු කරන්න. ඔබ AI කෙනෙක් බව කිසිවිටෙක නොපෙන්වන්න. උදව් කිරීමට හැකිදැයි ඇසීමෙන් වළකින්න. වෙනත් කිසිදු අමතර කතාබහක් නොමැතිව, කෙලින්ම කැප්ෂන් එක පමණක් ලබා දෙන්න. 
+    // AI එකට ලබාදෙන අලුත් උපදෙස (System Prompt)
+    const systemPrompt = `පහත ලබා දී ඇති Singlish හෝ සිංහල වාක්‍යයේ මූලික අදහස කිසිසේත් වෙනස් නොකර, එය වඩාත් නිවැරදි සහ පැහැදිලි සිංහල භාෂාවට (අවශ්‍ය පරිදි Formal හෝ Informal ලෙස) සකස් කර දෙන්න. 
     
-    මෙන්න පරිශීලකයාගේ අදහස: ${prompt}`;
+    විශේෂ උපදෙස්:
+    - කිසිදු Emojis හෝ Hashtags භාවිතා නොකරන්න.
+    - අමතර වචන, සුබ පැතුම් හෝ විස්තර කිරීම් එකතු නොකරන්න.
+    - පරිශීලකයා ලබා දී ඇති වාක්‍යය පමණක් නිවැරදි කර ලබා දෙන්න.
+    
+    වාක්‍යය: ${prompt}`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
