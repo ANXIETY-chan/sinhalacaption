@@ -21,12 +21,11 @@
             max-width: 600px;
             width: 100%;
             text-align: center;
-            border-top: 6px solid #064e3b; /* Brand Deep Green */
+            border-top: 6px solid #064e3b; 
         }
         
-        /* Logo Styling - නම ඇතුළත් ලෝගෝ එකට හරියටම සෙට් වෙන්න හැදිණි */
         .brand-logo {
-            width: 220px; /* ලෝගෝ එක පැහැදිලිව පෙනෙන්න ප්‍රමාණය වැඩි කළා */
+            width: 220px;
             height: auto;
             margin-bottom: 15px;
             transition: transform 0.3s ease;
@@ -35,14 +34,12 @@
             transform: scale(1.02);
         }
 
-        /* Subtitle */
         p.sub-text {
             color: #475569; 
             margin-bottom: 25px;
             font-size: 16px;
         }
         
-        /* Textarea Container */
         .textarea-container {
             position: relative;
             margin-bottom: 20px;
@@ -67,7 +64,6 @@
             box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.1);
         }
         
-        /* Paste Button */
         .paste-btn {
             position: absolute;
             top: 12px;
@@ -90,7 +86,6 @@
             border-color: #94a3b8;
         }
 
-        /* Generate Button */
         button.generate-btn {
             width: 100%;
             background-color: #064e3b; 
@@ -115,7 +110,6 @@
             box-shadow: none;
         }
         
-        /* Result Box */
         .result-box {
             position: relative;
             padding: 20px;
@@ -162,13 +156,13 @@
 <body>
 
 <div class="container">
-    <!-- ලෝගෝ එක පමණක් පෙන්වීම (නම ඇතුළත් නිසා ඩබල් වීම වළකා ඇත) -->
     <img src="logo.png" alt="SinhalaCaption.lk Logo" class="brand-logo">
     
-    <p class="sub-text">ඔයාගේ Singlish හරි, සිංහල හරි වාක්‍යය මෙතන ටයිප් කරන්න 👇</p>
+    <!-- English, Singlish හෝ සිංහල ඕනෑම එකක් දාන්න පුළුවන් බව පෙන්වන ලදී -->
+    <p class="sub-text">Type in English, Singlish, or Sinhala 👇</p>
     
     <div class="textarea-container">
-        <textarea id="inputText" placeholder="ඔයාගේ අදහස මෙතන ලියන්න..."></textarea>
+        <textarea id="inputText" placeholder="Write your thoughts here... (උදා: Had a great day at the office!)"></textarea>
         <button class="paste-btn" onclick="pasteFromClipboard()" title="Paste Text">📋 Paste</button>
     </div>
     
