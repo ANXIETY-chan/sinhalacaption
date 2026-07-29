@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinhalaCaption.lk</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f6f8; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+        h2 { color: #333; }
+        textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-top: 15px; resize: none; }
+        button { background: #0056b3; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; margin-top: 15px; width: 100%; }
+        button:hover { background: #004085; }
+        #result { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 8px; text-align: left; min-height: 50px; font-size: 16px; color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SinhalaCaption.lk</h2>
+    <p>ඔබගේ ලිඛිත සිංහල හෝ Singlish වාක්‍යය මෙහි යොදන්න.</p>
+    
+    <textarea id="userInput" placeholder="මෙතන ටයිප් කරන්න..."></textarea>
+    <button onclick="generateCaption()">ಕ್ಯැプション එක හදන්න</button>
+    
+    <div id="result">ප්‍රතිඵලය මෙහි පෙන්වනු ඇත...</div>
+</div>
+
+<script>
+    async function generateCaption() {
+        const text = document.getElementById('userInput').value;
+        const resultDiv = document.getElementById('result');
+        
+        if (!text.trim()) {
+            alert('කරුණාකර යමක් ඇතුළත් කරන්න!');
+            return;
+        }
+
+        resultDiv.innerText = 'සකස් කරමින් පවතී... කරුණාකර රැඳී සිටින්න.';
+
+        try {
+            const response = await fetch('/api/gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: text })
+            });
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                resultDiv.innerText = data.candidates[0].content.parts[0].text;
+            } else {
+                resultDiv.innerText = 'දෝෂයක් සිදු විය: ' + JSON.stringify(data);
+            }
+        } catch (error) {
+            resultDiv.innerText = 'සර්වර් දෝෂයකි: ' + error.message;
+        }
+    }
+</script>
+
+</body>
+</html>
