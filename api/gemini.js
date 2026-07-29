@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt, style } = req.body; // මෙතනින් style එක අල්ලගන්නවා
+    const { prompt } = req.body;
     
     const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
 
@@ -12,25 +12,17 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
     }
 
-    // පරිශීලකයා තෝරපු විලාසයට අනුව උපදෙස් වෙනස් කිරීම
-    let styleInstruction = "";
-    if (style === 'formal') {
-        styleInstruction = "මෙය අනිවාර්යයෙන්ම ලිඛිත/නිල (Formal) සිංහල භාෂාවෙන් පමණක් ලබා දෙන්න. (උදාහරණ: කරනවා -> කරයි, යනවා -> යයි). ව්‍යාකරණ නිවැරදි විය යුතුය.";
-    } else {
-        styleInstruction = "මෙය අනිවාර්යයෙන්ම කතා කරන/සාමාන්‍ය (Informal) සිංහල භාෂාවෙන් පමණක් ලබා දෙන්න. මිත්‍රශීලී ස්වභාවයක් ගත යුතුය. (උදාහරණ: කරයි -> කරනවා, යයි -> යනවා).";
-    }
-
-    const systemPrompt = `ඔබ දක්ෂ භාෂා පරිවර්තකයෙකි. 
-    පරිශීලකයා ලබා දෙන Singlish හෝ සිංහල වාක්‍යයේ අකුරු සහ ව්‍යාකරණ වැරදි සකසා, වඩාත් අර්ථවත් සහ පැහැදිලි සිංහල වාක්‍යයක් බවට පත් කර දෙන්න.
-    
-    විශේෂිත භාෂා විලාසය: ${styleInstruction}
+    // English, Singlish හෝ Sinhala කුමන භාෂාවකින් දුන්නත් එය Informal සිංහලට හැරවීමට දෙන නියෝගය
+    const systemPrompt = `ඔබ දක්ෂ භාෂා පරිවර්තකයෙකි සහ කැප්ෂන් රචකයෙකි. 
+    පරිශීලකයා ලබා දෙන ආදානය (Input) **English, Singlish හෝ Sinhala** කුමන භාෂාවකින් තිබුණද, එහි අන්තර්ගතය හොඳින් තේරුම් ගෙන, එය වඩාත් ආකර්ෂණීය සහ ස්වාභාවික **informal (එදිනෙදා කතා කරන/spoken) සිංහල** කැප්ෂන් එකක් බවට පත් කර දෙන්න.
     
     විශේෂ උපදෙස්:
-    - කිසිදු Emojis හෝ Hashtags භාවිතා නොකරන්න.
-    - අමතර කතාබහක්, සුබ පැතුම් හෝ පැහැදිලි කිරීම් අවශ්‍ය නැත.
-    - අවසාන නිවැරදි සිංහල වාක්‍යය පමණක් ප්‍රතිදානය (Output) කරන්න.
+    - නිල හෝ පොත්පත්වල පාවිච්චි කරන Formal බස භාවිත නොකරන්න (උදාහරණ: 'පැමිණියෙමි' වෙනුවට 'ආවා', 'කරයි' වෙනුවට 'කරනවා' යනාදී ලෙස කතා කරන විලාසය පාවිච්චි කරන්න).
+    - කිසිදු Emojis හෝ Hashtags (හැෂ්ටැග්) ස්වයංක්‍රීයව ඇතුළත් නොකරන්න.
+    - අමතර පැහැදිලි කිරීම්, සටහන් හෝ සුබපැතුම් කිසිවක් අවශ්‍ය නැත.
+    - අවසාන නිවැරදි සිංහල කැප්ෂන් පෙළ පමණක් ප්‍රතිදානය (Output) කරන්න.
     
-    වාක්‍යය: ${prompt}`;
+    පරිශීලකයාගේ අදහස: ${prompt}`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
