@@ -1,1 +1,278 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok වලට Viral යන Caption එකක් ලියන්නේ කොහොමද? - SinhalaCaption.lk</title>
+    <style>
+        :root {
+            --primary-green: #064e3b;
+            --primary-hover: #022c22;
+            --accent-orange: #f59e0b;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border-color: #e2e8f0;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            background-color: var(--surface);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo img {
+            height: 80px; 
+            width: auto;
+            object-fit: contain;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--primary-green);
+        }
+        .nav-cta {
+            background-color: var(--primary-green);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        @media(max-width: 768px) {
+            nav ul { display: none; }
+        }
+
+        /* --- Blog Content --- */
+        .blog-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .breadcrumb:hover { text-decoration: underline; }
+
+        .blog-title {
+            font-size: 36px;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .blog-meta {
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .blog-hero-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .blog-content p {
+            font-size: 17px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .blog-content h2 {
+            font-size: 24px;
+            color: var(--primary-green);
+            margin: 40px 0 20px;
+        }
+
+        .blog-content h3 {
+            font-size: 19px;
+            color: var(--text-main);
+            margin: 25px 0 10px;
+        }
+
+        .blog-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .blog-content li {
+            margin-bottom: 15px;
+            font-size: 17px;
+        }
+
+        .blog-inline-img {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .cta-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: 0.3s;
+            box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2);
+        }
+        .cta-btn:hover { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-2px); 
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: 60px;
+        }
+        footer p { opacity: 0.8; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="bglogoonly.webp" alt="SinhalaCaption.lk"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#blog" style="color: var(--primary-green);">Blog</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="index.html" class="nav-cta">Try Generator</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Blog Content -->
+    <main class="blog-container">
+        <a href="index.html#blog" class="breadcrumb">← ආපසු බ්ලොග් පිටුවට</a>
+        
+        <h1 class="blog-title">TikTok වලට Viral යන Caption එකක් ලියන්නේ කොහොමද?</h1>
+        <div class="blog-meta">පළ කළේ: ජූලි 30, 2026 • විනාඩි 4ක කියවීමක්</div>
+
+        <!-- Hero Image -->
+        <img src="blog/tiktok01.jpg" alt="TikTok Viral Caption Secrets" class="blog-hero-img">
+
+        <div class="blog-content">
+            <h2>හැඳින්වීම:</h2>
+            <p>TikTok එකේ වීඩියෝ එකක් Viral යන්න නම්, වීඩියෝ එක කොච්චර ලස්සන වුණත් මදි, ඒකට හරියටම ගැළපෙන Caption එකක් තියෙන්නම ඕනේ. ගොඩක් අය කරන්නේ වීඩියෝ එක අප්ලෝඩ් කරලා නිකම්ම Hashtag ටිකක් දාලා අතෑරලා දාන එකයි. ඒත් ඇල්ගොරිතම් (Algorithm) එක ඔයාගේ වීඩියෝ එක තව අයට පෙන්නන්න නම්, මිනිස්සු ඒ වීඩියෝ එකේ රැඳිලා ඉන්න කාලය (Watch Time) සහ Engagement එක ගොඩක් වැදගත්. ඒකට ලොකුම සපෝට් එකක් දෙන්නේ ඔයා දාන කැප්ෂන් එකයි.</p>
+
+            <h2>TikTok Captions ලියද්දි සැලකිලිමත් වෙන්න ඕන රහස් 4ක්:</h2>
+            
+            <h3>1. කුතුහලය ඇවිස්සීම (Create Curiosity):</h3>
+            <p>මිනිස්සුන්ට වීඩියෝ එකේ අන්තිම වෙනකන් බලන්න හේතුවක් දෙන්න. "වීඩියෝ එකේ අන්තිමට වෙන දේ බලන්නකෝ", "මේක නම් ඔයාලා හිතපු දෙයක් නෙවෙයි" වගේ දේවල් දැම්මම මිනිස්සු වීඩියෝ එක අන්තිම වෙනකන් බලනවා.</p>
+
+            <h3>2. කෙටි සහ පැහැදිලි වීම:</h3>
+            <p>TikTok බලන අය ගොඩක් දිග රචනා කියවන්න කම්මැලියි. ඒ නිසා ඔයාගේ අදහස වචන 10කින් 15කින් ලස්සනට, ටක් ගාලා තේරෙන විදියට ලියන්න.</p>
+
+            <!-- Inline Image 1 -->
+            <img src="blog/tiktok02.jpg" alt="Call to action mockup on phone" class="blog-inline-img">
+
+            <h3>3. Call to Action (CTA) එකක් දෙන්න:</h3>
+            <p>මිනිස්සුන්ට මොනවා හරි කරන්න කියන්න. "ඔයාලගේ අදහසත් කමෙන්ට් කරගෙන යන්න", "මේක දකින්න ඕන යාළුවෙකුව මෙන්ෂන් කරන්න" වගේ දේවල් වලින් Comments සහ Shares ප්‍රමාණය වැඩි වෙනවා.</p>
+
+            <h3>4. ගැළපෙන Hashtags පාවිච්චි කිරීම:</h3>
+            <p>අදාළ නැති හැම Hashtag එකක්ම දාන්නේ නැතුව, වීඩියෝ එකට හරියටම ගැළපෙන Trending Hashtags 3ක් හෝ 4ක් පාවිච්චි කරන්න (උදා: #srilanka #sinhalatiktok #foryoupage).</p>
+
+            <h2>Viral යන TikTok Captions සඳහා උදාහරණ 5ක්:</h2>
+            <ul>
+                <li><strong>ආතල් වීඩියෝ එකකට:</strong> "අන්තිමට වුණ දේ නම් මංවත් හිතුවේ නෑ! 😂 ඔයාලටත් මෙහෙම වෙලා තියෙනවද?"</li>
+                <li><strong>ප්‍රයෝජනවත් (Educational) වීඩියෝ එකකට:</strong> "මේ ට්‍රික් එක නම් ගොඩක් අයට වැදගත් වෙයි. Save කරලා තියාගන්න 💡"</li>
+                <li><strong>Travel වීඩියෝ එකකට:</strong> "ලංකාවේ තියෙන ලස්සනම තැන්වලින් එකක්. ඊළඟ නිවාඩුවට යන්න කට්ටියව මෙන්ෂන් කරමු! 🍃"</li>
+                <li><strong>කෑම වීඩියෝ එකකට:</strong> "මේක දැක්කම කටට කෙළ ඉනුවා නම් අනිවා ලයික් එකක් දාන්න 🤤"</li>
+                <li><strong>Business ප්‍රමෝෂන් එකකට:</strong> "අඩුම ගාණට හොඳම කොලිටි එකක් හොයනවා නම් මේක මිස් කරගන්න එපා. විස්තර ඕන අය කමෙන්ට් කරන්න 👇"</li>
+            </ul>
+
+            <!-- Inline Image 2 -->
+            <img src="blog/tiktok03.webp" alt="Summary Checklist" class="blog-inline-img">
+
+            <h2>නිතර අහන ප්‍රශ්න (FAQs):</h2>
+            <ul>
+                <li><strong>සිංහලෙන් කැප්ෂන් දැම්මම Views අඩු වෙනවද?</strong> - කිසිසේත්ම නෑ. TikTok ලංකාවේ Audience එකට ගොඩක් වෙලාවට Push කරන්නේ සිංහල කන්ටෙන්ට්. ඒ නිසා සිංහලෙන් පැහැදිලිව දාන කැප්ෂන් වලට හොඳ Reach එකක් එනවා.</li>
+                <li><strong>Hashtags කීයක් දාන්න ඕනෙද?</strong> - 3ත් 5ත් අතර ප්‍රමාණයක් තමයි වඩාත්ම සුදුසු.</li>
+            </ul>
+
+            <div class="cta-box">
+                <h2>අවසානය:</h2>
+                <p style="margin-bottom: 20px;">මේ ඔක්කොම හිත හිත ඉන්න කම්මැලියි වගේ නම්, අපේ SinhalaCaption ටූල් එකට ඇවිත් ඔයාගේ අදහස Singlish වලින් ගහන්න. තත්පරෙන් අපි ඔයාට Viral යන TikTok caption එකක් හදලා දෙන්නම්!</p>
+                <!-- Home page එකේ Generator එකට යන ලින්ක් එක -->
+                <a href="index.html" class="cta-btn">දැන්ම Caption එකක් හදන්න ✨</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 SinhalaCaption.lk | Engineered for Sri Lankan Creators.</p>
+    </footer>
+
+</body>
+</html>
