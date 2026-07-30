@@ -350,18 +350,22 @@
             border: 1px solid var(--border-color);
             transition: 0.3s;
             cursor: pointer;
+            text-decoration: none;
+            display: block;
         }
         .blog-card:hover { border-color: var(--primary-green); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .blog-img {
             width: 100%;
             height: 180px;
             background-color: #e2e8f0;
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
         }
-        .blog-content { padding: 20px; }
+        .blog-content { padding: 20px; text-decoration: none; }
         .blog-content h3 { font-size: 18px; color: var(--text-main); margin-bottom: 10px; line-height: 1.4; }
         .blog-content p { font-size: 14px; color: var(--text-sub); }
 
@@ -446,8 +450,7 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            <!-- Header Logo (bglogoonly.png) -->
-            <img src="bglogoonly.png" alt="SinhalaCaption.lk">
+            <a href="index.html"><img src="bglogoonly.webp" alt="SinhalaCaption.lk"></a>
         </div>
         <nav>
             <ul>
@@ -464,8 +467,7 @@
     <!-- Hero & Tool -->
     <section class="hero" id="home">
         
-        <!-- Hero Section Logo (bglogo.png) -->
-        <img src="bglogo.png" alt="SinhalaCaption.lk Logo" class="hero-logo">
+        <img src="bglogo.webp" alt="SinhalaCaption.lk Logo" class="hero-logo">
 
         <h1>Craft Perfect <span>Sinhala Captions</span> Instantly</h1>
         <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
@@ -539,13 +541,14 @@
     <section class="section-wrapper" id="blog">
         <h2 class="section-title">බ්ලොග් එකෙන් අලුත්ම ලිපි</h2>
         <div class="blog-grid">
-            <div class="blog-card">
-                <div class="blog-img">📱</div>
+            <!-- Linked to blog folder images -->
+            <a href="blog-tiktok.html" class="blog-card">
+                <div class="blog-img" style="background-image: url('blog/tiktok01.jpg');"></div>
                 <div class="blog-content">
                     <h3>TikTok වලට Viral යන Caption එකක් ලියන්නේ කොහොමද?</h3>
                     <p>ඔයාගේ වීඩියෝ එකට Views ගේන්න පුළුවන් කැප්ෂන් එකක් හදාගන්න ලේසිම විදිය.</p>
                 </div>
-            </div>
+            </a>
             <div class="blog-card">
                 <div class="blog-img">👍</div>
                 <div class="blog-content">
