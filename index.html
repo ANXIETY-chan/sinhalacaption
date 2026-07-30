@@ -4,17 +4,617 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SinhalaCaption.lk - Premium Sinhala Caption Generator</title>
-    <!-- ඔයාගේ පරණ CSS ටික ඒ විදියටම තියෙනවා (ඉඩ ඉතුරු කරන්න මම CSS ටික skip කළා, ඔයාගේ CSS ටිකම මෙතන තියාගන්න) -->
     <style>
-        /* ඔයා එවපු CSS ටික ඒ විදියටම මෙතන තියන්න... 
-           කිසිම වෙනසක් කරන්න ඕන නෑ. */
+        :root {
+            --primary-green: #064e3b;
+            --primary-hover: #022c22;
+            --accent-orange: #f59e0b;
+            --accent-hover: #d97706;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            background-color: var(--surface);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo img {
+            height: 80px; 
+            width: auto;
+            object-fit: contain;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--primary-green);
+        }
+        .nav-cta {
+            background-color: var(--primary-green);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* --- Hero Section & Tool --- */
+        .hero {
+            padding: 80px 5% 60px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero-logo {
+            height: 160px; 
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+        .hero h1 span {
+            color: var(--accent-orange);
+        }
+        .hero p.subtitle {
+            font-size: 18px;
+            color: var(--text-sub);
+            margin-bottom: 50px;
+        }
+
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.08);
+            border-top: 6px solid var(--primary-green);
+            text-align: left;
+        }
+        
+        @media(max-width: 768px) {
+            .tool-container { grid-template-columns: 1fr; }
+        }
+
+        .input-group label.main-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-green);
+        }
+
+        .textarea-wrapper {
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 20px;
+            padding-bottom: 55px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            background-color: #fafafa;
+            transition: 0.3s;
+        }
+        textarea:focus {
+            border-color: var(--primary-green);
+            background-color: var(--surface);
+            box-shadow: 0 0 0 4px rgba(6, 78, 59, 0.05);
+        }
+
+        .paste-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--primary-green);
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .paste-btn:hover { background: #f1f5f9; }
+
+        /* --- Toggles Section --- */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider {
+            background-color: var(--accent-orange); 
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        .toggle-label {
+            font-size: 15px;
+            color: var(--primary-green);
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* --- Generate Button --- */
+        .generate-btn {
+            width: 100%;
+            background-color: var(--primary-green); 
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2);
+        }
+        .generate-btn:hover { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-2px); 
+        }
+        .generate-btn:disabled { 
+            background-color: #94a3b8; 
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: none;
+        }
+
+        /* --- Result Box --- */
+        .result-box {
+            height: 100%;
+            min-height: 180px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            padding: 25px;
+            padding-bottom: 65px; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            bottom: 15px; 
+            right: 15px;
+            background: white;
+            border: 1px solid #bbf7d0;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--primary-green);
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .copy-btn:hover { background: var(--primary-green); color: white; }
+
+        #responseText {
+            color: var(--primary-green);
+            font-size: 17px;
+            line-height: 1.8;
+            margin-top: 0; 
+            white-space: pre-wrap;
+        }
+
+        .loader {
+            display: none;
+            color: var(--primary-green);
+            font-weight: 600;
+            margin-top: 0;
+        }
+
+        /* --- Common Section Styles --- */
+        .section-wrapper {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        /* --- Features Section --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .feature-card {
+            background: var(--surface);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .feature-card:hover { border-color: var(--primary-green); transform: translateY(-5px); }
+        .feature-icon { font-size: 40px; margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 10px; font-size: 20px; color: var(--text-main); }
+        .feature-card p { color: var(--text-sub); font-size: 15px; }
+
+        /* --- Blog Section --- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .blog-card {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .blog-card:hover { border-color: var(--primary-green); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .blog-img {
+            width: 100%;
+            height: 180px;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .blog-content { padding: 20px; }
+        .blog-content h3 { font-size: 18px; color: var(--text-main); margin-bottom: 10px; line-height: 1.4; }
+        .blog-content p { font-size: 14px; color: var(--text-sub); }
+
+        /* --- FAQ Section --- */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        details {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            transition: 0.3s;
+        }
+        details[open] {
+            border-color: var(--primary-green);
+            box-shadow: 0 4px 10px rgba(6, 78, 59, 0.05);
+        }
+        summary {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary-green);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: '+';
+            font-size: 24px;
+            color: var(--accent-orange);
+            transition: 0.3s;
+        }
+        details[open] summary::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-sub);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* --- Contact Section --- */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-box {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+        }
+        footer p { opacity: 0.8; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <!-- ඔයාගේ HTML Body එක ඒ විදියටම තියන්න (Header, Hero, FAQ ඔක්කොම ඒ විදියටමයි) -->
-    
-    <!-- Script එක පමණක් මෙලෙස වෙනස් කරගන්න -->
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <!-- Header Logo (bglogoonly.png) -->
+            <img src="bglogoonly.png" alt="SinhalaCaption.lk">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home" class="nav-cta">Try Generator</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero & Tool -->
+    <section class="hero" id="home">
+        
+        <!-- Hero Section Logo (bglogo.png) -->
+        <img src="bglogo.png" alt="SinhalaCaption.lk Logo" class="hero-logo">
+
+        <h1>Craft Perfect <span>Sinhala Captions</span> Instantly</h1>
+        <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
+
+        <div class="tool-container">
+            <!-- Left Side: Input -->
+            <div class="input-group">
+                <label class="main-label">Your Input text</label>
+                <div class="textarea-wrapper">
+                    <textarea id="inputText" placeholder="Write your thoughts here..." onkeydown="handleKeyPress(event)"></textarea>
+                    <button class="paste-btn" onclick="pasteFromClipboard()">📋 Paste</button>
+                </div>
+                
+                <!-- Fixed Toggles -->
+                <div class="options-container">
+                    <div class="toggle-row">
+                        <label class="switch">
+                            <input type="checkbox" id="emojiToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="emojiToggle" class="toggle-label">Add Emojis 🤩</label>
+                    </div>
+                    
+                    <div class="toggle-row">
+                        <label class="switch">
+                            <input type="checkbox" id="hashtagToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="hashtagToggle" class="toggle-label">Trending Hashtags #️⃣</label>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generateBtn" onclick="generateCaption()">ලස්සන සිංහලෙන් හදාගන්න ✨</button>
+            </div>
+
+            <!-- Right Side: Output -->
+            <div class="input-group">
+                <label class="main-label">Spoken Sinhala Result</label>
+                <div class="result-box" id="resultBox">
+                    <div id="loader" class="loader">පොඩ්ඩක් ඉන්න, කැප්ෂන් එක හදනවා... ⏳</div>
+                    <p id="responseText">ඔයාගේ සිංහල කැප්ෂන් එක මෙතන...</p>
+                    <button class="copy-btn" onclick="copyToClipboard()" id="copyBtn">📋 Copy</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section-wrapper" id="features">
+        <h2 class="section-title">ඇයි SinhalaCaption.lk?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🍃</div>
+                <h3>Natural & Authentic</h3>
+                <p>ස්වාභාවික සිංහල භාවිතය. ගූගල් ට්‍රාන්ස්ලේට් වගේ රොබෝ භාෂාවක් නැතුව, අපි එදිනෙදා කතා කරන නියම සිංහල විලාසය දෙනවා.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>පට්ට ස්පීඩ්. ඔයාගේ අදහස දීලා තත්පර ගාණකින් ෆේස්බුක් හරි ඉන්ස්ටග්‍රෑම් එකට හරි සුපිරි කැප්ෂන් එකක් හදාගන්න පුළුවන්.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>AI Powered</h3>
+                <p>අලුත්ම AI තාක්ෂණය. ඔයා English, Singlish මොකෙන් ටයිප් කළත්, අදහස හරියටම තේරුම් අරන් සිංහලට හරවනවා.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section-wrapper" id="blog">
+        <h2 class="section-title">බ්ලොග් එකෙන් අලුත්ම ලිපි</h2>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-img">📱</div>
+                <div class="blog-content">
+                    <h3>TikTok වලට Viral යන Caption එකක් ලියන්නේ කොහොමද?</h3>
+                    <p>ඔයාගේ වීඩියෝ එකට Views ගේන්න පුළුවන් කැප්ෂන් එකක් හදාගන්න ලේසිම විදිය.</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-img">👍</div>
+                <div class="blog-content">
+                    <h3>Facebook Posts වලට ගැළපෙන සිංහල වදන්</h3>
+                    <p>නිකම්ම ෆොටෝ එකක් දානවට වඩා ලස්සන අදහසක් එක්ක පෝස්ට් එකක් දාන හැටි.</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-img">🤖</div>
+                <div class="blog-content">
+                    <h3>අපේ සිංහල ව්‍යවහාරය සහ AI තාක්ෂණය</h3>
+                    <p>කෘත්‍රිම බුද්ධිය කොහොමද අපේ භාෂාව මෙච්චර හොඳට තේරුම් ගන්නේ කියලා බලමු.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section-wrapper" id="faq">
+        <h2 class="section-title">නිතර අහන ප්‍රශ්න (FAQ)</h2>
+        <div class="faq-container">
+            <details>
+                <summary>මේක පාවිච්චි කරන්න සල්ලි ගෙවන්න ඕනෙද?</summary>
+                <div class="faq-answer">
+                    නෑ, SinhalaCaption.lk කියන්නේ 100% නොමිලේ පාවිච්චි කරන්න පුළුවන් සේවාවක්. ඔයාට ඕනෙම වෙලාවක මේකෙන් කැප්ෂන් හදාගන්න පුළුවන්.
+                </div>
+            </details>
+            <details>
+                <summary>English වලින් ටයිප් කරලත් සිංහල කැප්ෂන් ගන්න පුළුවන්ද?</summary>
+                <div class="faq-answer">
+                    ඔව් අනිවාර්යයෙන්ම! ඔයා සම්පූර්ණයෙන්ම English වලින් හරි, Singlish (සිංග්ලිෂ්) වලින් හරි ටයිප් කළත්, අපේ AI එක ඒක තේරුම් අරන් ලස්සන සිංහලෙන් කැප්ෂන් එක හදලා දෙනවා.
+                </div>
+            </details>
+            <details>
+                <summary>Emojis සහ Hashtags ඇඩ් වෙන්නේ කොහොමද?</summary>
+                <div class="faq-answer">
+                    ටයිප් කරන තැන තියෙන 'Add Emojis' සහ 'Trending Hashtags' කියන switches දෙක On කළාම, ඔයාගේ අදහසට ගැළපෙනම Emojis සහ Social Media Reach එක වැඩිවෙන Hashtags ඔටෝම ඇතුළත් කරනවා.
+                </div>
+            </details>
+            <details>
+                <summary>මගේ දත්ත ආරක්ෂිතද?</summary>
+                <div class="faq-answer">
+                    ඔව්, ඔයා ටයිප් කරන කිසිම දෙයක් අපි අපේ Servers වල සේව් කරගන්නේ නෑ. ඒ හැමදෙයක්ම AI එකෙන් Process වෙලා ඒ වෙලාවෙම අයින් වෙලා යනවා.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section-wrapper" id="contact" style="padding-top: 40px; padding-bottom: 80px;">
+        <div class="contact-container">
+            <h2 class="section-title" style="margin-bottom: 20px;">අප හා සම්බන්ධ වන්න</h2>
+            <p style="color: var(--text-sub); margin-bottom: 30px; font-size: 16px;">
+                ඔබගේ අදහස්, යෝජනා හෝ ගැටලු තියෙනවා නම් අපිට ඊමේල් කරන්න.
+            </p>
+            <div class="contact-box">
+                <p style="font-size: 18px; font-weight: 600; color: var(--primary-green);">
+                    📧 Email: <a href="mailto:hello@sinhalacaption.lk" style="color: var(--accent-orange); text-decoration: none;">hello@sinhalacaption.lk</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 SinhalaCaption.lk | Engineered for Sri Lankan Creators.</p>
+    </footer>
+
+    <!-- අකුරෙන් අකුර ලියවෙන Streaming Script එක -->
     <script>
         async function pasteFromClipboard() {
             try {
