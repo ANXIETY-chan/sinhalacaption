@@ -1,18 +1,28 @@
-export default async function handler(req, res) {
+export const config = {
+  runtime: 'edge', // තත්පර 10 සීමාවෙන් බේරෙන මැජික් එක!
+};
+
+export default async function handler(req) {
+  // Edge function වලදී req.method සහ req.json() පාවිච්චි කරන විදිය වෙනස්
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
-    const { prompt, addEmojis, addHashtags } = req.body;
+    const { prompt, addEmojis, addHashtags } = await req.json();
     
     const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' });
+      return new Response(JSON.stringify({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    // Emojis අඩුවෙන් දාන්න උපදෙස් දීම
     let emojiInstruction = addEmojis 
         ? "- අන්තර්ගතයට ගැළපෙන Emojis භාවිතා කරන්න. නමුත් එය පමණට වඩා වැඩි නොවිය යුතුය (මුළු කැප්ෂන් එකටම Emojis 2ක් හෝ 3ක් පමණක් ඉතා අලංකාරව එක් කරන්න)." 
         : "- කිසිදු Emojis භාවිතා නොකරන්න.";
@@ -34,7 +44,8 @@ export default async function handler(req, res) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+    // මෙතන API URL එකට streamGenerateContent?alt=sse යොදා ඇත
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key=${apiKey}&alt=sse`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,14 +55,24 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
-    
     if (!response.ok) {
-       return res.status(response.status).json(data);
+        const errorText = await response.text();
+        return new Response(errorText, { status: response.status });
     }
 
-    return res.status(200).json(data);
+    // උත්තරය අකුරෙන් අකුර (Stream එකක් විදියට) කෙලින්ම සයිට් එකට යැවීම
+    return new Response(response.body, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
+
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
