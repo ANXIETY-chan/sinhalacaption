@@ -48,8 +48,8 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    // මෙහි 'gemini-1.5-flash-latest' ලෙස Model එක යාවත්කාලීන කර ඇත
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${apiKey}&alt=sse`, {
+    // ස්ක්‍රීන්ෂොට් එකේ තිබුණු විදිහටම 'gemini-2.5-flash' Model එක මෙතනට දාලා තියෙනවා 🚀
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?key=${apiKey}&alt=sse`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
