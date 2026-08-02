@@ -13,7 +13,7 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // ඔයාගේ OpenRouter API Key එක
+    // ඔයාගේ OpenRouter API Key එක (මේක public share කරන්න එපා)
     const apiKey = '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';
 
     if (!apiKey) {
@@ -21,6 +21,19 @@ export default async function handler(req) {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
+    }
+
+    // 1. Marketing වචන අඳුරගන්න Logic එක
+    const marketingKeywords = ['මිල', 'විකිණීමට', 'රුපියල්', 'රු.', 'rs', 'price', 'sale', 'discount', 'offer', 'order', 'delivery', 'stock', 'aluth', 'cash on delivery'];
+    const lowerCasePrompt = prompt.toLowerCase();
+    
+    // User ගේ prompt එකේ අර වචන තියෙනවද කියලා බලනවා
+    const isMarketing = marketingKeywords.some(keyword => lowerCasePrompt.includes(keyword));
+
+    // 2. Marketing නම් දෙන අමතර උපදෙස
+    let marketingInstruction = "";
+    if (isMarketing) {
+      marketingInstruction = "- මෙය ව්‍යාපාරික/අලෙවිකරණ (Marketing) පෝස්ට් එකක් බැවින්, පාරිභෝගිකයින් භාණ්ඩය හෝ සේවාව මිලදී ගැනීමට පෙළඹෙන ආකාරයේ (Persuasive) සහ ආකර්ෂණීය වචන භාවිතා කරන්න.";
     }
 
     let toneInstruction = "- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික informal (spoken) සිංහල පාවිච්චි කරන්න (උදා: 'පැමිණියෙමි' වෙනුවට 'ආවා').";
@@ -36,10 +49,14 @@ export default async function handler(req) {
         ? "- සමාජ මාධ්‍යවල Reach එක වැඩි කරන, අන්තර්ගතයට ගැළපෙන Trending Hashtags 3ත් 5ත් අතර ප්‍රමාණයක් අවසානයට එක් කරන්න." 
         : "- කිසිදු Hashtags භාවිතා නොකරන්න.";
 
-    const systemPrompt = `ඔබ දක්ෂ භාෂා පරිවර්තකයෙකි සහ Social Media කැප්ෂන් රචකයෙකි. 
-    පරිශීලකයා ලබා දෙන ආදානය (Input) English, Singlish හෝ Sinhala කුමන භාෂාවකින් තිබුණද, එය ආකර්ෂණීය සිංහල කැප්ෂන් එකක් බවට පත් කර දෙන්න.
+    // 🔥 යාවත්කාලීන කළ, Quality එක වැඩි කරන Expert Prompt එක 🔥
+    const systemPrompt = `ඔබ වසර ගණනාවක අත්දැකීම් ඇති, අතිදක්ෂ Social Media Copywriter සහ SEO Expert කෙනෙකි. 
+    පරිශීලකයා ලබා දෙන අදහස (English, Singlish හෝ Sinhala කුමන භාෂාවකින් තිබුණද), එය කියවන්නාගේ අවධානය වහාම දිනාගන්නා (engaging) සහ අලෙවිකරණයට (marketing) ඉතාම සුදුසු ඉහළම ගුණාත්මකභාවයෙන් යුත් සිංහල කැප්ෂන් එකක් බවට පත් කිරීම ඔබේ කාර්යයයි.
     
     විශේෂ උපදෙස්:
+    - ආකර්ෂණීය ආරම්භයක් (Hook), පැහැදිලි අන්තර්ගතයක් (Body) සහ ක්‍රියාමාර්ගයකට යොමු කරන අවසානයක් (Call to Action) යොදාගනිමින් කැප්ෂන් එක වෘත්තීය මට්ටමින් ගොඩනගන්න.
+    - පරිශීලකයා ලබා දෙන කිසිදු තොරතුරක් (විශේෂයෙන්ම මිල ගණන්, නම්, ස්ථාන) මඟ නොහරින්න. ඒවා ඉතා උපායශීලීව වාක්‍යවලට ගලපන්න.
+    ${marketingInstruction}
     ${toneInstruction}
     - ඡේද දිගු නම් කියවීමට පහසු වන පරිදි කෙටි ඡේද හෝ Bullet points (•) ලෙස වෙන් කර දක්වන්න.
     ${emojiInstruction}
@@ -48,50 +65,4 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://sinhalacaption.lk',
-        'X-Title': 'Sinhala Caption AI',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [
-          { role: 'user', content: systemPrompt }
-        ],
-        max_tokens: 1000,
-        stream: false // Stream එක off කළා සම්පූර්ණ උත්තරේ එකපාර ගන්න
-      })
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        return new Response(errorText, { status: response.status });
-    }
-
-    // OpenRouter එකෙන් එන උත්තරේ කියවීම
-    const data = await response.json();
-    const generatedText = data.choices[0].message.content;
-
-    // Frontend එකට තේරෙන Google Gemini Format එකට උත්තරේ හැදීම
-    const fakeGeminiFormat = `data: ${JSON.stringify({
-      candidates: [{ content: { parts: [{ text: generatedText }] } }]
-    })}\n\n`;
-
-    return new Response(fakeGeminiFormat, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
-
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-}
+    // ... (ඉතිරි Fetch සහ Streaming Logic එක එහෙම්මම තියාගන්න)
