@@ -11,7 +11,6 @@ export default async function handler(req) {
   }
 
   try {
-    // අලුතින් tone එකත් මෙතනින් ලබාගන්නවා
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
     const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
@@ -23,7 +22,7 @@ export default async function handler(req) {
       });
     }
 
-    // Tone එක අනුව AI එකට දෙන උපදෙස් වෙනස් කිරීම
+    // Tone එක අනුව AI එකට දෙන උපදෙස්
     let toneInstruction = "- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික informal (spoken) සිංහල පාවිච්චි කරන්න (උදා: 'පැමිණියෙමි' වෙනුවට 'ආවා').";
     if (tone === 'formal') {
       toneInstruction = "- භාෂා විලාසය: ව්‍යාපාරික හෝ ආයතනික නිවේදනවලට ගැළපෙන formal (නිල) සිංහල බස භාවිත කරන්න.";
@@ -49,7 +48,8 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key=${apiKey}&alt=sse`, {
+    // මෙහි 'gemini-1.5-flash-latest' ලෙස Model එක යාවත්කාලීන කර ඇත
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${apiKey}&alt=sse`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
