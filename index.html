@@ -23,412 +23,98 @@
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* --- Navigation Bar --- */
         header {
-            background-color: var(--surface);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background-color: var(--surface); padding: 15px 5%; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
         }
-        .logo img {
-            height: 50px; 
-            width: auto;
-            object-fit: contain;
-            display: block;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-        nav a {
-            text-decoration: none;
-            color: var(--text-sub);
-            font-weight: 500;
-            font-size: 15px;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: var(--primary-green);
-        }
-        .nav-cta {
-            background-color: var(--primary-green);
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
+        .logo img { height: 50px; width: auto; object-fit: contain; display: block; }
+        nav ul { list-style: none; display: flex; gap: 25px; align-items: center; }
+        nav a { text-decoration: none; color: var(--text-sub); font-weight: 500; font-size: 15px; transition: color 0.3s; }
+        nav a:hover { color: var(--primary-green); }
+        .nav-cta { background-color: var(--primary-green); color: white !important; padding: 10px 20px; border-radius: 8px; font-weight: 600; }
 
-        /* --- Hero Section & Tool --- */
-        .hero {
-            padding: 50px 5% 40px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .hero-logo {
-            height: 130px; 
-            width: auto;
-            max-width: 100%;
-            object-fit: contain;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            color: var(--text-main);
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-        .hero h1 span {
-            color: var(--primary-green);
-        }
-        .hero p.subtitle {
-            font-size: 16px;
-            color: var(--text-sub);
-            margin-bottom: 35px;
-        }
+        .hero { padding: 50px 5% 40px; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .hero-logo { height: 130px; width: auto; max-width: 100%; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06)); }
+        .hero h1 { font-size: 36px; color: var(--text-main); margin-bottom: 10px; font-weight: 800; }
+        .hero h1 span { color: var(--primary-green); }
+        .hero p.subtitle { font-size: 16px; color: var(--text-sub); margin-bottom: 35px; }
 
         .tool-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            background: var(--surface);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.08);
-            border-top: 6px solid var(--primary-green);
-            text-align: left;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: var(--surface);
+            padding: 30px; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.08);
+            border-top: 6px solid var(--primary-green); text-align: left;
         }
-        
-        @media(max-width: 768px) {
-            .tool-container { grid-template-columns: 1fr; }
-        }
+        @media(max-width: 768px) { .tool-container { grid-template-columns: 1fr; } }
 
-        .pane-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
+        .pane-title { font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
+        .textarea-wrapper { position: relative; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; padding: 15px; margin-bottom: 15px; }
+        textarea { width: 100%; height: 130px; border: none; outline: none; resize: none; font-size: 15px; color: var(--text-main); background: transparent; }
+        .paste-btn { background: #f1f5f9; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-sub); cursor: pointer; float: right; }
 
-        .textarea-wrapper {
-            position: relative;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 130px;
-            border: none;
-            outline: none;
-            resize: none;
-            font-size: 15px;
-            color: var(--text-main);
-            background: transparent;
-        }
-
-        .paste-btn {
-            background: #f1f5f9;
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-sub);
-            cursor: pointer;
-            float: right;
-        }
-
-        /* --- Modern Pill Switch (Tone Selector) --- */
-        .segmented-control {
-            display: flex;
-            position: relative;
-            background-color: var(--primary-green);
-            border-radius: 30px;
-            padding: 4px;
-            margin-bottom: 15px;
-        }
-        
-        .segmented-control input[type="radio"] {
-            display: none;
-        }
-
-        .segment-label {
-            flex: 1;
-            text-align: center;
-            padding: 10px 0;
-            font-weight: 600;
-            font-size: 14px;
-            color: white;
-            cursor: pointer;
-            z-index: 2;
-            user-select: none;
-            transition: color 0.3s;
-        }
-
-        .segment-slider {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            bottom: 4px;
-            width: calc(50% - 4px);
-            background-color: white;
-            border-radius: 26px;
-            z-index: 1;
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
+        .segmented-control { display: flex; position: relative; background-color: var(--primary-green); border-radius: 30px; padding: 4px; margin-bottom: 15px; }
+        .segmented-control input[type="radio"] { display: none; }
+        .segment-label { flex: 1; text-align: center; padding: 10px 0; font-weight: 600; font-size: 14px; color: white; cursor: pointer; z-index: 2; user-select: none; transition: color 0.3s; }
+        .segment-slider { position: absolute; top: 4px; left: 4px; bottom: 4px; width: calc(50% - 4px); background-color: white; border-radius: 26px; z-index: 1; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         #informal:checked ~ .segment-slider { transform: translateX(0); }
         #formal:checked ~ .segment-slider { transform: translateX(100%); }
-
         #informal:checked ~ label[for="informal"] { color: var(--primary-green); }
         #formal:checked ~ label[for="formal"] { color: var(--primary-green); }
 
-        /* --- Modern Extra Chips --- */
-        .extras-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .extras-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .extra-chip { display: none; }
+        .chip-label { display: inline-block; background: #f1f5f9; color: var(--text-sub); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); user-select: none; }
+        .extra-chip:checked + .chip-label { background: #ecfdf5; color: var(--primary-green); border-color: #a7f3d0; }
 
-        .extra-chip {
-            display: none;
-        }
-
-        .chip-label {
-            display: inline-block;
-            background: #f1f5f9;
-            color: var(--text-sub);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid var(--border-color);
-            user-select: none;
-        }
-
-        .extra-chip:checked + .chip-label {
-            background: #ecfdf5;
-            color: var(--primary-green);
-            border-color: #a7f3d0;
-        }
-
-        /* --- Generate Button --- */
-        .generate-btn {
-            width: 100%;
-            background-color: var(--primary-green); 
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2);
-        }
+        .generate-btn { width: 100%; background-color: var(--primary-green); color: white; border: none; padding: 15px; font-size: 16px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2); }
         .generate-btn:hover { background-color: var(--primary-hover); }
         .generate-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
 
-        /* --- Result Box --- */
-        .result-box {
-            background-color: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 14px;
-            padding: 20px;
-            height: 220px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .copy-btn {
-            align-self: flex-end;
-            background: white;
-            border: 1px solid #bbf7d0;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--primary-green);
-            cursor: pointer;
-            display: none;
-        }
+        .result-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 20px; height: 220px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .copy-btn { align-self: flex-end; background: white; border: 1px solid #bbf7d0; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; color: var(--primary-green); cursor: pointer; display: none; }
         .copy-btn:hover { background: var(--primary-green); color: white; }
+        #responseText { color: var(--primary-green); font-size: 15px; line-height: 1.6; white-space: pre-wrap; overflow-y: auto; flex-grow: 1; }
+        .loader { display: none; color: var(--primary-green); font-weight: 600; }
+        .ai-notice { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: 10px; font-style: italic; }
 
-        #responseText {
-            color: var(--primary-green);
-            font-size: 15px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
+        .section-wrapper { padding: 60px 5%; max-width: 1100px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 28px; margin-bottom: 35px; color: var(--primary-green); font-weight: 700; }
 
-        .loader {
-            display: none;
-            color: var(--primary-green);
-            font-weight: 600;
-        }
-
-        .ai-notice {
-            font-size: 12px;
-            color: var(--text-sub);
-            text-align: center;
-            margin-top: 10px;
-            font-style: italic;
-        }
-
-        /* --- Sections Layout Fix (Width & Grids) --- */
-        .section-wrapper {
-            padding: 60px 5%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 35px;
-            color: var(--primary-green);
-            font-weight: 700;
-        }
-
-        /* Features */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-        @media(max-width: 768px) {
-            .features-grid { grid-template-columns: 1fr; }
-        }
-        .feature-card {
-            background: var(--surface);
-            padding: 30px 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        @media(max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+        .feature-card { background: var(--surface); padding: 30px 20px; border-radius: 16px; text-align: center; border: 1px solid var(--border-color); }
         .feature-icon { font-size: 36px; margin-bottom: 12px; }
         .feature-card h3 { margin-bottom: 8px; font-size: 18px; color: var(--text-main); }
         .feature-card p { color: var(--text-sub); font-size: 14px; }
 
-        /* Blog Grid - Fixed to 3 Columns */
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-        @media(max-width: 768px) {
-            .blog-grid { grid-template-columns: 1fr; }
-        }
-        .blog-card {
-            background: var(--surface);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            transition: 0.3s;
-        }
+        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        @media(max-width: 768px) { .blog-grid { grid-template-columns: 1fr; } }
+        .blog-card { background: var(--surface); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); text-decoration: none; display: flex; flex-direction: column; text-align: left; transition: 0.3s; }
         .blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .blog-img {
-            width: 100%;
-            height: 160px;
-            background-size: cover;
-            background-position: center;
-            background-color: #e2e8f0;
-        }
+        .blog-img { width: 100%; height: 160px; background-size: cover; background-position: center; background-color: #e2e8f0; }
         .blog-content { padding: 20px; }
         .blog-content h3 { font-size: 16px; color: var(--text-main); margin-bottom: 8px; line-height: 1.4; }
         .blog-content p { font-size: 13px; color: var(--text-sub); }
 
-        /* FAQ */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        details {
-            background: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px 20px;
-        }
+        .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        details { background: var(--surface); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px 20px; }
         details[open] { border-color: var(--primary-green); }
-        summary {
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--text-main);
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        summary { font-weight: 600; font-size: 15px; color: var(--text-main); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::-webkit-details-marker { display: none; }
         summary::after { content: '+'; font-size: 20px; color: var(--primary-green); }
         details[open] summary::after { content: '-'; }
-        .faq-answer {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-sub);
-            font-size: 14px;
-        }
+        .faq-answer { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--text-sub); font-size: 14px; }
 
-        /* Contact & Footer */
         .contact-container { max-width: 600px; margin: 0 auto; text-align: center; }
-        .contact-box {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            display: inline-block;
-            width: 100%;
-        }
-        footer {
-            background-color: var(--primary-green);
-            color: white;
-            padding: 30px 5%;
-            text-align: center;
-            font-size: 14px;
-        }
+        .contact-box { background: var(--surface); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); display: inline-block; width: 100%; }
+        footer { background-color: var(--primary-green); color: white; padding: 30px 5%; text-align: center; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo">
             <a href="index.html"><img src="bglogoonly.webp" alt="SinhalaCaption.lk"></a>
@@ -444,10 +130,8 @@
         </nav>
     </header>
 
-    <!-- Hero & Tool -->
     <section class="hero" id="home">
         <img src="bglogo.webp" alt="SinhalaCaption.lk Logo" class="hero-logo">
-
         <h1>Craft Perfect <span>Sinhala Captions</span> Instantly</h1>
         <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
 
@@ -488,7 +172,7 @@
                 <div class="pane-title" id="outputTitle">Spoken Sinhala Result</div>
                 <div class="result-box" id="resultBox">
                     <div id="loader" class="loader">පොඩ්ඩක් ඉන්න, කැප්ෂන් එක හදනවා... ⏳</div>
-                    <p id="responseText">ඔයාගේ සිංහල කැප්ෂන් එක මෙතන ...</p>
+                    <p id="responseText">ඔයාගේ සිංහල කැප්ෂන් එක මෙතන දිස්වේවි...</p>
                     <button class="copy-btn" onclick="copyToClipboard()" id="copyBtn">📋 Copy</button>
                 </div>
                 <div class="ai-notice">⚠️ AI එක නිසා පොඩි පොඩි වැරදි වෙන්න පුළුවන්, පෝස්ට් කරන්න කලින් එක පාරක් බලන්න!</div>
@@ -584,7 +268,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 SinhalaCaption.lk | Engineered for Sri Lankan Creators.</p>
     </footer>
@@ -659,11 +342,10 @@
 
                 if (!response.ok) {
                     loader.style.display = 'none';
-                    if (response.status === 429) {
-                        responseText.innerText = "කණගාටුයි, දැනට ගොඩක් අය භාවිතා කරනවා. තත්පර කිහිපයකින් නැවත උත්සාහ කරන්න. ⏳";
-                    } else {
-                        responseText.innerText = "අවුලක් වුණා: කරුණාකර නැවත උත්සාහ කරන්න.";
-                    }
+                    const errText = await response.text();
+                    
+                    // මින් ඉදිරියට එරර් එක ආවොත්, රතු පාටින් හරියටම මොකක්ද අවුල කියලා පෙන්නයි
+                    responseText.innerText = `Error (${response.status}): ${errText}`;
                     responseText.style.color = "#dc2626";
                     generateBtn.disabled = false;
                     return;
@@ -699,7 +381,7 @@
 
             } catch (error) {
                 loader.style.display = 'none';
-                responseText.innerText = "Network අවුලක්: " + error.message;
+                responseText.innerText = "Network Error: " + error.message;
                 responseText.style.color = "#dc2626";
             }
 
@@ -708,7 +390,7 @@
 
         function copyToClipboard() {
             const textToCopy = document.getElementById('responseText').innerText;
-            if(textToCopy === "" || textToCopy.includes("අවුලක් වුණා") || textToCopy.includes("කණගාටුයි")) return;
+            if(textToCopy === "" || textToCopy.includes("Error")) return;
             
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const copyBtn = document.getElementById('copyBtn');
