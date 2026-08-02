@@ -61,8 +61,8 @@ export default async function handler(req) {
         messages: [
           { role: 'user', content: systemPrompt }
         ],
-        max_tokens: 1000, // <-- මෙන්න මේකයි අලුතින් දැම්මේ. මේකෙන් Error එක නැතිවෙලා යනවා.
-        stream: true
+        max_tokens: 1000,
+        stream: false // Stream එක off කළා සම්පූර්ණ උත්තරේ එකපාර ගන්න
       })
     });
 
@@ -71,7 +71,16 @@ export default async function handler(req) {
         return new Response(errorText, { status: response.status });
     }
 
-    return new Response(response.body, {
+    // OpenRouter එකෙන් එන උත්තරේ කියවීම
+    const data = await response.json();
+    const generatedText = data.choices[0].message.content;
+
+    // Frontend එකට තේරෙන Google Gemini Format එකට උත්තරේ හැදීම
+    const fakeGeminiFormat = `data: ${JSON.stringify({
+      candidates: [{ content: { parts: [{ text: generatedText }] } }]
+    })}\n\n`;
+
+    return new Response(fakeGeminiFormat, {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
