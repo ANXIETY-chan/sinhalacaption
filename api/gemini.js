@@ -1,5 +1,5 @@
 export const config = {
-  runtime: 'edge', // තත්පර 10 සීමාවෙන් බේරෙන මැජික් එක!
+  runtime: 'edge', 
 };
 
 export default async function handler(req) {
@@ -11,6 +11,7 @@ export default async function handler(req) {
   }
 
   try {
+    // අලුතින් tone එකත් මෙතනින් ලබාගන්නවා
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
     const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
@@ -22,10 +23,10 @@ export default async function handler(req) {
       });
     }
 
-    // Tone එක අනුව System Instruction එක වෙනස් කිරීම
-    let toneInstruction = `- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික **informal (spoken)** සිංහල පාවිච්චි කරන්න (උදාහරණ: 'පැමිණියෙමි' වෙනුවට 'ආවා', 'කරයි' වෙනුවට 'කරනවා').`;
+    // Tone එක අනුව AI එකට දෙන උපදෙස් වෙනස් කිරීම
+    let toneInstruction = "- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික informal (spoken) සිංහල පාවිච්චි කරන්න (උදා: 'පැමිණියෙමි' වෙනුවට 'ආවා').";
     if (tone === 'formal') {
-      toneInstruction = `- භාෂා විලාසය: ව්‍යාපාරික හෝ ආයතනික නිවේදනවලට ගැළපෙන **formal (නිල)** සිංහල බස භාවිත කරන්න.`;
+      toneInstruction = "- භාෂා විලාසය: ව්‍යාපාරික හෝ ආයතනික නිවේදනවලට ගැළපෙන formal (නිල) සිංහල බස භාවිත කරන්න.";
     }
 
     let emojiInstruction = addEmojis 
@@ -37,19 +38,17 @@ export default async function handler(req) {
         : "- කිසිදු Hashtags භාවිතා නොකරන්න.";
 
     const systemPrompt = `ඔබ දක්ෂ භාෂා පරිවර්තකයෙකි සහ Social Media කැප්ෂන් රචකයෙකි. 
-    පරිශීලකයා ලබා දෙන ආදානය (Input) English, Singlish හෝ Sinhala කුමන භාෂාවකින් තිබුණද, එහි අන්තර්ගතය හොඳින් තේරුම් ගෙන, එය වඩාත් ආකර්ෂණීය සිංහල කැප්ෂන් එකක් බවට පත් කර දෙන්න.
+    පරිශීලකයා ලබා දෙන ආදානය (Input) English, Singlish හෝ Sinhala කුමන භාෂාවකින් තිබුණද, එය ආකර්ෂණීය සිංහල කැප්ෂන් එකක් බවට පත් කර දෙන්න.
     
     විශේෂ උපදෙස්:
     ${toneInstruction}
-    - පරිශීලකයා ලබා දී ඇති ආදානය දිගු ඡේදයක් නම් හෝ කරුණු කිහිපයක් තිබේ නම්, එය කියවීමට පහසු වන පරිදි කෙටි ඡේද හෝ Bullet points (•) ලෙස වෙන් කර දක්වන්න.
+    - ඡේද දිගු නම් කියවීමට පහසු වන පරිදි කෙටි ඡේද හෝ Bullet points (•) ලෙස වෙන් කර දක්වන්න.
     ${emojiInstruction}
     ${hashtagInstruction}
-    - අමතර පැහැදිලි කිරීම්, සටහන් හෝ සුබපැතුම් කිසිවක් අවශ්‍ය නැත.
-    - අවසාන නිවැරදි සිංහල කැප්ෂන් පෙළ පමණක් ප්‍රතිදානය (Output) කරන්න.
+    - අමතර පැහැදිලි කිරීම් අවශ්‍ය නැත. අවසාන නිවැරදි සිංහල කැප්ෂන් පෙළ පමණක් ප්‍රතිදානය කරන්න.
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    // gemini-1.5-flash හෝ gemini-2.5-flash model එක පාවිච්චි කළ හැක
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?key=${apiKey}&alt=sse`, {
       method: 'POST',
       headers: {
