@@ -23,17 +23,15 @@ export default async function handler(req) {
       });
     }
 
-    // 1. Marketing වචන අඳුරගන්න Logic එක
-    const marketingKeywords = ['මිල', 'විකිණීමට', 'රුපියල්', 'රු.', 'rs', 'price', 'sale', 'discount', 'offer', 'order', 'delivery', 'stock', 'aluth', 'cash on delivery'];
+    // 1. Marketing වචන අඳුරගන්න Logic එක (තව වචන එකතු කළා)
+    const marketingKeywords = ['මිල', 'විකිණීමට', 'රුපියල්', 'රු.', 'rs', 'price', 'sale', 'discount', 'offer', 'order', 'delivery', 'stock', 'business', 'cake'];
     const lowerCasePrompt = (prompt || '').toLowerCase();
     
-    // User ගේ prompt එකේ අර වචන තියෙනවද කියලා බලනවා
     const isMarketing = marketingKeywords.some(keyword => lowerCasePrompt.includes(keyword));
 
-    // 2. Marketing නම් දෙන අමතර උපදෙස
     let marketingInstruction = "";
     if (isMarketing) {
-      marketingInstruction = "- මෙය ව්‍යාපාරික/අලෙවිකරණ (Marketing) පෝස්ට් එකක් බැවින්, පාරිභෝගිකයින් භාණ්ඩය හෝ සේවාව මිලදී ගැනීමට පෙළඹෙන ආකාරයේ (Persuasive) සහ ආකර්ෂණීය වචන භාවිතා කරන්න.";
+      marketingInstruction = "- මෙය ව්‍යාපාරික/අලෙවිකරණ (Marketing) පෝස්ට් එකක් බැවින්, පාරිභෝගිකයින් භාණ්ඩය මිලදී ගැනීමට පෙළඹෙන ආකාරයේ ආකර්ෂණීය වචන භාවිතා කරන්න.";
     }
 
     let toneInstruction = "- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික informal (spoken) සිංහල පාවිච්චි කරන්න (උදා: 'පැමිණියෙමි' වෙනුවට 'ආවා').";
@@ -42,26 +40,26 @@ export default async function handler(req) {
     }
 
     let emojiInstruction = addEmojis 
-        ? "- අන්තර්ගතයට ගැළපෙන Emojis 2ක් හෝ 3ක් පමණක් ඉතා අලංකාරව එක් කරන්න." 
+        ? "- අන්තර්ගතයට ගැළපෙන Emojis 2ක් හෝ 3ක් පමණක් එක් කරන්න." 
         : "- කිසිදු Emojis භාවිතා නොකරන්න.";
         
     let hashtagInstruction = addHashtags 
-        ? "- සමාජ මාධ්‍යවල Reach එක වැඩි කරන, අන්තර්ගතයට ගැළපෙන Trending Hashtags 3ත් 5ත් අතර ප්‍රමාණයක් අවසානයට එක් කරන්න." 
+        ? "- සමාජ මාධ්‍යවලට ගැළපෙන Trending Hashtags 3ත් 5ත් අතර ප්‍රමාණයක් අනිවාර්යයෙන්ම කැප්ෂන් එක අවසානයට එක් කරන්න." 
         : "- කිසිදු Hashtags භාවිතා නොකරන්න.";
 
-    // 🔥 යාවත්කාලීන කළ, Quality එක වැඩි කරන Expert Prompt එක 🔥
-    const systemPrompt = `ඔබ වසර ගණනාවක අත්දැකීම් ඇති, අතිදක්ෂ Social Media Copywriter සහ SEO Expert කෙනෙකි. 
-    පරිශීලකයා ලබා දෙන අදහස (English, Singlish හෝ Sinhala කුමන භාෂාවකින් තිබුණද), එය කියවන්නාගේ අවධානය වහාම දිනාගන්නා (engaging) සහ අලෙවිකරණයට (marketing) ඉතාම සුදුසු ඉහළම ගුණාත්මකභාවයෙන් යුත් සිංහල කැප්ෂන් එකක් බවට පත් කිරීම ඔබේ කාර්යයයි.
+    // 🔥 යාවත්කාලීන කළ, ඉතා දැඩි (Strict) System Prompt එක 🔥
+    const systemPrompt = `ඔබ දක්ෂ Social Media Copywriter කෙනෙකි. පහත දෙන අදහස කියවා, එය ලස්සන සිංහල කැප්ෂන් එකක් බවට පත් කරන්න.
     
-    විශේෂ උපදෙස්:
-    - ආකර්ෂණීය ආරම්භයක් (Hook), පැහැදිලි අන්තර්ගතයක් (Body) සහ ක්‍රියාමාර්ගයකට යොමු කරන අවසානයක් (Call to Action) යොදාගනිමින් කැප්ෂන් එක වෘත්තීය මට්ටමින් ගොඩනගන්න.
-    - පරිශීලකයා ලබා දෙන කිසිදු තොරතුරක් (විශේෂයෙන්ම මිල ගණන්, නම්, ස්ථාන) මඟ නොහරින්න. ඒවා ඉතා උපායශීලීව වාක්‍යවලට ගලපන්න.
+    🔴 ඉතා වැදගත් නීති (CRITICAL RULES - MUST FOLLOW):
+    1. ඔබ ප්‍රතිදානය (Output) කළ යුත්තේ අවසාන සිංහල කැප්ෂන් එක පමණි!
+    2. කිසිදු හේතුවක් මත ඉංග්‍රීසි වචන, අමතර පැහැදිලි කිරීම් (උදා: "Here is your caption", "I will rephrase this") හෝ අඩකින් නැවැත්වූ වාක්‍ය ඇතුළත් නොකරන්න. සම්පූර්ණයෙන්ම සිංහලෙන් පමණක් ලියා අවසන් කරන්න.
+    3. පරිශීලකයා දී ඇති මිල ගණන් (උදා: 2500) සහ නම් අනිවාර්යයෙන්ම කැප්ෂන් එකට ඇතුළත් කරන්න.
+    
+    උපදෙස්:
     ${marketingInstruction}
     ${toneInstruction}
-    - ඡේද දිගු නම් කියවීමට පහසු වන පරිදි කෙටි ඡේද හෝ Bullet points (•) ලෙස වෙන් කර දක්වන්න.
     ${emojiInstruction}
     ${hashtagInstruction}
-    - අමතර පැහැදිලි කිරීම් අවශ්‍ය නැත. අවසාන නිවැරදි සිංහල කැප්ෂන් පෙළ පමණක් ප්‍රතිදානය කරන්න.
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
@@ -77,6 +75,7 @@ export default async function handler(req) {
         model: 'google/gemini-2.5-pro',
         messages: [{ role: 'user', content: systemPrompt }],
         max_tokens: 1500,
+        temperature: 0.7, // AI එක අනවශ්‍ය දේවල් ලියන එක නවත්වන්න
         stream: true 
       })
     });
@@ -86,7 +85,7 @@ export default async function handler(req) {
         return new Response(errorText, { status: response.status });
     }
 
-    // Streaming Logic එක 
+    // Streaming Logic එක (කෑලි හැලෙන්නේ නැති වෙන්න හැදුවා)
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body.getReader();
@@ -101,12 +100,12 @@ export default async function handler(req) {
             
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
-            buffer = lines.pop();
+            buffer = lines.pop(); // අවසන් අසම්පූර්ණ කොටස තියාගන්නවා
 
             for (const line of lines) {
               const trimmedLine = line.trim();
               if (trimmedLine.startsWith('data: ')) {
-                const dataStr = trimmedLine.replace('data: ', '');
+                const dataStr = trimmedLine.substring(6); // 'data: ' කොටස අයින් කරනවා
                 if (dataStr === '[DONE]') continue;
                 
                 try {
@@ -119,7 +118,7 @@ export default async function handler(req) {
                     controller.enqueue(encoder.encode(fakeGeminiChunk));
                   }
                 } catch (e) {
-                  // Ignore minor parse errors in stream
+                  // සුළු Errors මඟහරින්න
                 }
               }
             }
