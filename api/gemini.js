@@ -13,7 +13,7 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // ඔයාගේ OpenRouter API Key එක (මේක public share කරන්න එපා)
+    // ඔයාගේ OpenRouter API Key එක
     const apiKey = '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';
 
     if (!apiKey) {
@@ -25,7 +25,7 @@ export default async function handler(req) {
 
     // 1. Marketing වචන අඳුරගන්න Logic එක
     const marketingKeywords = ['මිල', 'විකිණීමට', 'රුපියල්', 'රු.', 'rs', 'price', 'sale', 'discount', 'offer', 'order', 'delivery', 'stock', 'aluth', 'cash on delivery'];
-    const lowerCasePrompt = prompt.toLowerCase();
+    const lowerCasePrompt = (prompt || '').toLowerCase();
     
     // User ගේ prompt එකේ අර වචන තියෙනවද කියලා බලනවා
     const isMarketing = marketingKeywords.some(keyword => lowerCasePrompt.includes(keyword));
@@ -65,4 +65,85 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    // ... (ඉතිරි Fetch සහ Streaming Logic එක එහෙම්මම තියාගන්න)
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://sinhalacaption.lk',
+        'X-Title': 'Sinhala Caption AI',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-pro',
+        messages: [{ role: 'user', content: systemPrompt }],
+        max_tokens: 1500,
+        stream: true 
+      })
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        return new Response(errorText, { status: response.status });
+    }
+
+    // Streaming Logic එක 
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        const encoder = new TextEncoder();
+        let buffer = '';
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+              const trimmedLine = line.trim();
+              if (trimmedLine.startsWith('data: ')) {
+                const dataStr = trimmedLine.replace('data: ', '');
+                if (dataStr === '[DONE]') continue;
+                
+                try {
+                  const dataObj = JSON.parse(dataStr);
+                  const content = dataObj.choices?.[0]?.delta?.content;
+                  if (content) {
+                    const fakeGeminiChunk = `data: ${JSON.stringify({
+                      candidates: [{ content: { parts: [{ text: content }] } }]
+                    })}\n\n`;
+                    controller.enqueue(encoder.encode(fakeGeminiChunk));
+                  }
+                } catch (e) {
+                  // Ignore minor parse errors in stream
+                }
+              }
+            }
+          }
+        } catch (err) {
+          controller.error(err);
+        } finally {
+          controller.close();
+        }
+      }
+    });
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
