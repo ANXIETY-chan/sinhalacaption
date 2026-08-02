@@ -13,10 +13,11 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    const apiKey = (process.env.GEMINI_API_KEY || '').replace(/['"]/g, '').trim();
+    // ඔයාගේ අලුත් API Key එක මෙහි කෙලින්ම ඇතුළත් කර ඇත
+    const apiKey = 'AQ.Ab8RN6KhbpAeheI7bJSTR6anlTVGwtTPeuUDISmJ1WVPC5dXTw';
 
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API Key එක Vercel එකෙන් ඇවිත් නෑ!' }), {
+      return new Response(JSON.stringify({ error: 'API Key එකක් ලබා දී නැත!' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -48,7 +49,6 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    // මෙහි ස්ක්‍රීන්ෂොට් එකේ තිබුණු 'gemini-2.5-pro' Model එක දමා ඇත 🚀
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=${apiKey}&alt=sse`, {
       method: 'POST',
       headers: {
