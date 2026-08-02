@@ -13,8 +13,8 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // ඔයාගේ අලුත් API Key එක මෙහි කෙලින්ම ඇතුළත් කර ඇත
-    const apiKey = 'AQ.Ab8RN6KhbpAeheI7bJSTR6anlTVGwtTPeuUDISmJ1WVPC5dXTw';
+    // ඔයාගේ අලුත් OpenRouter API Key එක මෙහි කෙලින්ම ඇතුළත් කර ඇත
+    const apiKey = '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';
 
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API Key එකක් ලබා දී නැත!' }), {
@@ -49,13 +49,21 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=${apiKey}&alt=sse`, {
+    // OpenRouter සඳහා API Call එක
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://sinhalacaption.lk', // ඔයාගේ සයිට් එකේ නම
+        'X-Title': 'Sinhala Caption AI', // ඔයාගේ ඇප් එකේ නම
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: systemPrompt }] }]
+        model: 'google/gemini-2.5-pro', // OpenRouter හි ඇති Gemini 2.5 Pro මාදිලිය
+        messages: [
+          { role: 'user', content: systemPrompt }
+        ],
+        stream: true // Stream කිරීම සක්‍රිය කර ඇත
       })
     });
 
