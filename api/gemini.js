@@ -13,7 +13,7 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // ඔයාගේ අලුත් OpenRouter API Key එක මෙහි කෙලින්ම ඇතුළත් කර ඇත
+    // ඔයාගේ OpenRouter API Key එක
     const apiKey = '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';
 
     if (!apiKey) {
@@ -23,7 +23,6 @@ export default async function handler(req) {
       });
     }
 
-    // Tone එක අනුව AI එකට දෙන උපදෙස්
     let toneInstruction = "- භාෂා විලාසය: එදිනෙදා කතා කරන ස්වාභාවික informal (spoken) සිංහල පාවිච්චි කරන්න (උදා: 'පැමිණියෙමි' වෙනුවට 'ආවා').";
     if (tone === 'formal') {
       toneInstruction = "- භාෂා විලාසය: ව්‍යාපාරික හෝ ආයතනික නිවේදනවලට ගැළපෙන formal (නිල) සිංහල බස භාවිත කරන්න.";
@@ -49,21 +48,21 @@ export default async function handler(req) {
     
     පරිශීලකයාගේ අදහස: ${prompt}`;
 
-    // OpenRouter සඳහා API Call එක
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://sinhalacaption.lk', // ඔයාගේ සයිට් එකේ නම
-        'X-Title': 'Sinhala Caption AI', // ඔයාගේ ඇප් එකේ නම
+        'HTTP-Referer': 'https://sinhalacaption.lk',
+        'X-Title': 'Sinhala Caption AI',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro', // OpenRouter හි ඇති Gemini 2.5 Pro මාදිලිය
+        model: 'google/gemini-2.5-pro',
         messages: [
           { role: 'user', content: systemPrompt }
         ],
-        stream: true // Stream කිරීම සක්‍රිය කර ඇත
+        max_tokens: 1000, // <-- මෙන්න මේකයි අලුතින් දැම්මේ. මේකෙන් Error එක නැතිවෙලා යනවා.
+        stream: true
       })
     });
 
