@@ -13,7 +13,7 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // 🔴 ඔයාගේ අලුත් OpenRouter API Key එක (මේක පරිස්සම් කරගන්න)
+    // 🔴 ඔයාගේ අලුත් OpenRouter API Key එක (මේක අනිත් අයට පේන්න දෙන්න එපා)
     const apiKey = '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';
 
     if (!apiKey) {
@@ -72,8 +72,8 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // 🔴 මෙන්න මේක තමයි සල්ලි කැපෙන්නේ නැති නොමිලේ දෙන Model එක 🔴
-        model: 'google/gemini-2.0-flash-exp:free',
+        // 🔴 අලුත්, වැඩ කරන Free Model එක 🔴
+        model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
         messages: [{ role: 'user', content: systemPrompt }],
         max_tokens: 1500,
         temperature: 0.7, 
