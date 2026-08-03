@@ -13,8 +13,8 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // ඔයාගේ OpenRouter API Key එක
-    const apiKey = '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';
+    // 🔴 ඔයාගේ අලුත් OpenRouter API Key එක (මේක පරිස්සම් කරගන්න)
+    const apiKey = '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';
 
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API Key එකක් ලබා දී නැත!' }), {
@@ -23,7 +23,7 @@ export default async function handler(req) {
       });
     }
 
-    // 1. Marketing වචන අඳුරගන්න Logic එක (තව වචන එකතු කළා)
+    // 1. Marketing වචන අඳුරගන්න Logic එක 
     const marketingKeywords = ['මිල', 'විකිණීමට', 'රුපියල්', 'රු.', 'rs', 'price', 'sale', 'discount', 'offer', 'order', 'delivery', 'stock', 'business', 'cake'];
     const lowerCasePrompt = (prompt || '').toLowerCase();
     
@@ -72,10 +72,11 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
+        // 🔴 මෙන්න මේක තමයි සල්ලි කැපෙන්නේ නැති නොමිලේ දෙන Model එක 🔴
+        model: 'google/gemini-2.0-flash-exp:free',
         messages: [{ role: 'user', content: systemPrompt }],
         max_tokens: 1500,
-        temperature: 0.7, // AI එක අනවශ්‍ය දේවල් ලියන එක නවත්වන්න
+        temperature: 0.7, 
         stream: true 
       })
     });
@@ -85,7 +86,7 @@ export default async function handler(req) {
         return new Response(errorText, { status: response.status });
     }
 
-    // Streaming Logic එක (කෑලි හැලෙන්නේ නැති වෙන්න හැදුවා)
+    // Streaming Logic එක
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body.getReader();
@@ -100,12 +101,12 @@ export default async function handler(req) {
             
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
-            buffer = lines.pop(); // අවසන් අසම්පූර්ණ කොටස තියාගන්නවා
+            buffer = lines.pop(); 
 
             for (const line of lines) {
               const trimmedLine = line.trim();
               if (trimmedLine.startsWith('data: ')) {
-                const dataStr = trimmedLine.substring(6); // 'data: ' කොටස අයින් කරනවා
+                const dataStr = trimmedLine.substring(6); 
                 if (dataStr === '[DONE]') continue;
                 
                 try {
