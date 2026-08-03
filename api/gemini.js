@@ -73,7 +73,7 @@ export default async function handler(req) {
       },
       body: JSON.stringify({
         // 🔴 අලුත්, වැඩ කරන Free Model එක 🔴
-        model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
+        model: 'google/gemini-2.0-flash-thinking-exp:free',
         messages: [{ role: 'user', content: systemPrompt }],
         max_tokens: 1500,
         temperature: 0.7, 
