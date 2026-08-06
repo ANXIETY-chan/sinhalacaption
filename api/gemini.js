@@ -10,14 +10,23 @@ export default async function handler(req) {
     });
   }
 
+  // 🛡️ Security Check: රික්වෙස්ට් එක එන්නේ ඇත්තටම අපේ Website එකෙන්ද කියලා බලමු
+  const referer = req.headers.get('referer') || '';
+  if (process.env.NODE_ENV === 'production' && !referer.includes('sinhalacaption.lk')) {
+    return new Response(JSON.stringify({ error: 'අවසර නොමැති පිවිසුමකි! (Unauthorized access)' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // 🔴 ඔයාගේ OpenRouter API Key එක 
-    const apiKey = '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';
+    // 🔐 Vercel Environment Variables වලින් ආරක්ෂිතව API Key එක ගැනීම (Hardcode කර නැත)
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API Key එකක් ලබා දී නැත!' }), {
+      return new Response(JSON.stringify({ error: 'API Key එකක් ලබා දී නැත! කරුණාකර Vercel හි Environment Variables පරීක්ෂා කරන්න.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
