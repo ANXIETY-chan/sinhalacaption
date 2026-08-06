@@ -46,9 +46,12 @@
         .tool-container {
             display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: var(--surface);
             padding: 30px; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.08);
-            border-top: 6px solid var(--primary-green); text-align: left;
+            border-top: 6px solid var(--primary-green); text-align: left; align-items: stretch;
         }
         @media(max-width: 768px) { .tool-container { grid-template-columns: 1fr; } }
+
+        /* 🔥 අලුතින් එකතු කළ Column Styling එක 🔥 */
+        .tool-column { display: flex; flex-direction: column; height: 100%; }
 
         .pane-title { font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
         .textarea-wrapper { position: relative; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; padding: 15px; margin-bottom: 15px; }
@@ -69,16 +72,41 @@
         .chip-label { display: inline-block; background: #f1f5f9; color: var(--text-sub); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); user-select: none; }
         .extra-chip:checked + .chip-label { background: #ecfdf5; color: var(--primary-green); border-color: #a7f3d0; }
 
-        .generate-btn { width: 100%; background-color: var(--primary-green); color: white; border: none; padding: 15px; font-size: 16px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2); }
+        .generate-btn { width: 100%; background-color: var(--primary-green); color: white; border: none; padding: 15px; font-size: 16px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; box-shadow: 0 4px 14px rgba(6, 78, 59, 0.2); margin-top: auto; }
         .generate-btn:hover { background-color: var(--primary-hover); }
         .generate-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
 
-        .result-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 20px; height: 220px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
-        .copy-btn { align-self: flex-end; background: white; border: 1px solid #bbf7d0; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; color: var(--primary-green); cursor: pointer; display: none; }
+        /* 🔥 වෙනස් කළ Result Box Styling එක 🔥 */
+        .result-box { 
+            background-color: #f0fdf4; 
+            border: 1px solid #bbf7d0; 
+            border-radius: 14px; 
+            padding: 20px; 
+            flex-grow: 1; 
+            min-height: 250px;
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            margin-bottom: 10px;
+        }
+        
+        #responseText { 
+            color: var(--primary-green); 
+            font-size: 15px; 
+            line-height: 1.6; 
+            white-space: pre-wrap; 
+            word-wrap: break-word; /* දිග වචන කැඩීමට */
+            overflow-y: auto; /* ස්ක්‍රෝල් වීමට */
+            flex-grow: 1; 
+            min-height: 0; 
+            margin-bottom: 15px;
+        }
+        
+        .copy-btn { align-self: flex-end; background: white; border: 1px solid #bbf7d0; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; color: var(--primary-green); cursor: pointer; display: none; margin-top: auto; }
         .copy-btn:hover { background: var(--primary-green); color: white; }
-        #responseText { color: var(--primary-green); font-size: 15px; line-height: 1.6; white-space: pre-wrap; overflow-y: auto; flex-grow: 1; }
-        .loader { display: none; color: var(--primary-green); font-weight: 600; }
-        .ai-notice { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: 10px; font-style: italic; }
+        
+        .loader { display: none; color: var(--primary-green); font-weight: 600; margin-bottom: 10px;}
+        .ai-notice { font-size: 12px; color: var(--text-sub); text-align: center; margin-top: auto; font-style: italic; }
 
         .section-wrapper { padding: 60px 5%; max-width: 1100px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 28px; margin-bottom: 35px; color: var(--primary-green); font-weight: 700; }
@@ -136,7 +164,8 @@
         <p class="subtitle">Type in English, Singlish, or Sinhala. Our AI delivers natural, spoken-style Sinhala for your social media.</p>
 
         <div class="tool-container">
-            <div>
+            <!-- Left Column -->
+            <div class="tool-column">
                 <div class="pane-title">Your Input text</div>
                 <div class="textarea-wrapper">
                     <textarea id="inputText" placeholder="ඔබේ ව්‍යාපාරය හෝ අදහස මෙතැනින් ලියන්න..." onkeydown="handleKeyPress(event)"></textarea>
@@ -168,7 +197,8 @@
                 <button class="generate-btn" id="generateBtn" onclick="generateCaption()">ලස්සන සිංහලෙන් හදාගන්න ✨</button>
             </div>
 
-            <div>
+            <!-- Right Column -->
+            <div class="tool-column">
                 <div class="pane-title" id="outputTitle">Spoken Sinhala Result</div>
                 <div class="result-box" id="resultBox">
                     <div id="loader" class="loader">පොඩ්ඩක් ඉන්න, කැප්ෂන් එක හදනවා... ⏳</div>
@@ -344,7 +374,6 @@
                     loader.style.display = 'none';
                     const errText = await response.text();
                     
-                    // මින් ඉදිරියට එරර් එක ආවොත්, රතු පාටින් හරියටම මොකක්ද අවුල කියලා පෙන්නයි
                     responseText.innerText = `Error (${response.status}): ${errText}`;
                     responseText.style.color = "#dc2626";
                     generateBtn.disabled = false;
