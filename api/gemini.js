@@ -10,9 +10,9 @@ export default async function handler(req) {
     });
   }
 
-  // 🛡️ Security Check: රික්වෙස්ට් එක එන්නේ ඇත්තටම අපේ Website එකෙන්ද කියලා බලමු
+  // 🛡️ Security Check (sinhalacaption.lk සහ vercel.app දෙකටම අවසර ඇත)
   const referer = req.headers.get('referer') || '';
-  if (process.env.NODE_ENV === 'production' && !referer.includes('sinhalacaption.lk')) {
+  if (process.env.NODE_ENV === 'production' && !referer.includes('sinhalacaption.lk') && !referer.includes('vercel.app')) {
     return new Response(JSON.stringify({ error: 'අවසර නොමැති පිවිසුමකි! (Unauthorized access)' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json' },
@@ -22,7 +22,7 @@ export default async function handler(req) {
   try {
     const { prompt, tone, addEmojis, addHashtags } = await req.json();
     
-    // 🔐 Vercel Environment Variables වලින් ආරක්ෂිතව API Key එක ගැනීම (Hardcode කර නැත)
+    // 🔐 Vercel Environment Variables වලින් ආරක්ෂිතව API Key එක ගැනීම
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
@@ -81,7 +81,6 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // 🔴 Meta AI (Llama 3.1) Free Model එක 🔴
         model: 'meta-llama/llama-3.1-8b-instruct:free',
         messages: [{ role: 'user', content: systemPrompt }],
         max_tokens: 1500,
@@ -95,7 +94,6 @@ export default async function handler(req) {
         return new Response(errorText, { status: response.status });
     }
 
-    // Streaming Logic එක
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body.getReader();
@@ -128,7 +126,6 @@ export default async function handler(req) {
                     controller.enqueue(encoder.encode(fakeGeminiChunk));
                   }
                 } catch (e) {
-                  // සුළු Errors මඟහරින්න
                 }
               }
             }
